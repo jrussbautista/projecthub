@@ -27,7 +27,7 @@ const Hero: React.FC<Props> = ({ description, heading }) => {
         <Typography variant="h3" gutterBottom>
           {heading}
         </Typography>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom color="textSecondary">
           {description}
         </Typography>
         <Button

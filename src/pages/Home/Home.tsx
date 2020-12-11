@@ -1,10 +1,10 @@
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import { ProjectList } from "components/project";
+import { ProjectList } from "components/Project";
 import { PROJECTS } from "data/mock-data";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import Hero from "components/hero";
+import Hero from "components/Hero";
 
 const useStyles = makeStyles((theme) => ({
   loadMoreContainer: {
@@ -23,7 +23,7 @@ const Home = () => {
   return (
     <>
       <Hero
-        heading="Discover The Best New Dev Projects Every Day"
+        heading="Discover The Best New Dev Projects"
         description="ProjectHub is a community of developers to share & 
         discuss the latest projects and ideas. It is a place to discover and get early 
         access to exciting new projects."

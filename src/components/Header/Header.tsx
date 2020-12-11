@@ -5,6 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import { useModal } from "contexts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Header() {
   const classes = useStyles();
 
+  const { openModal } = useModal();
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.header}>
@@ -40,8 +43,11 @@ export default function Header() {
               ProjectHub
             </Link>
           </Typography>
-
-          <Button color="primary" className={classes.headerLink}>
+          <Button
+            color="primary"
+            className={classes.headerLink}
+            onClick={() => openModal("LOGIN_VIEW")}
+          >
             Log In
           </Button>
           <Button color="primary" disableElevation variant="contained">

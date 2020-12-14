@@ -9,7 +9,7 @@ import reducer from "./authReducer";
 interface State {
   isAuthenticated: boolean;
   isLoading: boolean;
-  currentUser: any;
+  currentUser: User | null;
   login(value: Login): void;
   signUp(value: SignUp): void;
   logout(): void;
@@ -34,10 +34,11 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const setCurrentUser = (user: any) => {
     const userDetails: User = {
-      displayName: user.displayName as string,
+      id: user.uid,
+      name: user.displayName as string,
       email: user.email as string,
-      emailVerified: user.emailVerified,
-      photoURL: user.photoURL,
+      email_verified: user.emailVerified,
+      photo_url: user.photoURL,
     };
     dispatch({ type: "SET_CURRENT_USER", payload: { user: userDetails } });
   };

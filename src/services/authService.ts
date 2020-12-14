@@ -35,21 +35,19 @@ const login = async ({
 const signUp = async ({ name, email, password }: SignUp) => {
   try {
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
-    if (!user) {
-      throw new Error("Error in creating user");
+    if (user) {
+      const { uid } = user;
+      const newUser = {
+        name,
+        email,
+        photo_url: null,
+        created_at: timestamp,
+        updated_at: timestamp,
+      };
+      await auth.currentUser?.updateProfile({ displayName: name });
+      await db.collection("users").doc(uid).set(newUser);
+      return user;
     }
-
-    const { uid } = user;
-    const newUser = {
-      name,
-      email,
-      photo_url: user.photoURL,
-      created_at: timestamp,
-      updated_at: timestamp,
-    };
-
-    await db.collection("users").doc(uid).set(newUser);
-    return user;
   } catch (error) {
     throw new Error(error);
   }

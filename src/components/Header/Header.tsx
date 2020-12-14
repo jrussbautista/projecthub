@@ -135,6 +135,11 @@ export default function Header() {
                       My Projects
                     </MenuItem>
                     <MenuItem
+                      onClick={() => handleNavigateDropDownMenu("my_favorites")}
+                    >
+                      My Favorites
+                    </MenuItem>
+                    <MenuItem
                       onClick={() => handleNavigateDropDownMenu("logout")}
                     >
                       Logout

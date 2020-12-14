@@ -1,4 +1,4 @@
-import { LoginView } from "components/Auth";
+import { LoginView, SignUpView } from "components/Auth";
 import Modal from "components/Modal";
 import { useModal } from "contexts";
 
@@ -9,6 +9,8 @@ const ModalManager = () => {
     switch (type) {
       case "LOGIN_VIEW":
         return <LoginView />;
+      case "SIGN_UP_VIEW":
+        return <SignUpView />;
       default:
         break;
     }

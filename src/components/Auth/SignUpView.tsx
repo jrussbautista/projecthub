@@ -8,7 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import { useModal } from "contexts";
 import { useAuth } from "contexts/auth/AuthContext";
-import { Login } from "types/Auth";
+import { SignUp } from "types/Auth";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -39,22 +39,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginView = () => {
+const SignUpView = () => {
   const classes = useStyles();
 
-  const { login } = useAuth();
+  const { signUp } = useAuth();
   const { openModal, closeModal } = useModal();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { register, handleSubmit, errors } = useForm<Login>();
+  const { register, handleSubmit, errors } = useForm<SignUp>();
 
-  const onSubmit = async ({ email, password }: Login) => {
+  const onSubmit = async ({ name, email, password }: SignUp) => {
     try {
       setLoading(true);
       setError(null);
-      await login({ email, password });
+      await signUp({ name, email, password });
       setLoading(false);
       closeModal();
     } catch (error) {
@@ -72,6 +72,24 @@ const LoginView = () => {
           {error}
         </Alert>
       )}
+      <TextField
+        id="standard-basic"
+        label="Name"
+        name="name"
+        type="name"
+        className={classes.input}
+        autoComplete="true"
+        fullWidth
+        inputRef={register({
+          required: "Name is required field",
+          minLength: {
+            value: 6,
+            message: "Name must be at least 6 characters long",
+          },
+        })}
+        error={Boolean(errors.name)}
+        helperText={errors.name && errors.name.message}
+      />
       <TextField
         id="standard-basic"
         label="Email"
@@ -118,20 +136,20 @@ const LoginView = () => {
         type="submit"
         disabled={loading}
       >
-        {loading ? <CircularProgress size={30} /> : "Log In"}
+        {loading ? <CircularProgress size={30} /> : "Sign Up"}
       </Button>
       <div className={classes.linkContainer}>
-        <span>Don't have an account?</span>
+        <span>Have an account?</span>
         <Button
           color="primary"
           className={classes.link}
-          onClick={() => openModal("SIGN_UP_VIEW")}
+          onClick={() => openModal("LOG_IN_VIEW")}
         >
-          Sign Up
+          Log In
         </Button>
       </div>
     </form>
   );
 };
 
-export default LoginView;
+export default SignUpView;

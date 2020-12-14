@@ -73,7 +73,7 @@ const Project = () => {
         </div>
       </Card>
       <div className={classes.section}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           Related Projects
         </Typography>
         <ProjectList projects={PROJECTS.slice(0, 4)} />

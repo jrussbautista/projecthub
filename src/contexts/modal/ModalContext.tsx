@@ -12,7 +12,11 @@ const defaultValue = {
   isVisible: false,
 };
 
-const ModalContext = createContext<State | any>(defaultValue);
+const ModalContext = createContext<State>({
+  ...defaultValue,
+  openModal: () => null,
+  closeModal: () => null,
+});
 
 export const ModalProvider: React.FC = ({ children }) => {
   const [state, setState] = useState(defaultValue);

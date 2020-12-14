@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 interface Props {
   open: boolean;
@@ -20,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     borderRadius: 6,
+  },
+  closeContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
   },
 }));
 
@@ -40,7 +46,14 @@ const CustomModal: React.FC<Props> = ({ children, open, onClose }) => {
       }}
     >
       <Fade in={open}>
-        <div className={classes.paper}>{children}</div>
+        <div className={classes.paper}>
+          <div className={classes.closeContainer}>
+            <IconButton aria-label="delete" onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          </div>
+          {children}
+        </div>
       </Fade>
     </Modal>
   );

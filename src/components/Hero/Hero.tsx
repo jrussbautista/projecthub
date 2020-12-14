@@ -8,7 +8,7 @@ interface Props {
   heading: string;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   heroContainer: {
     padding: 50,
     textAlign: "center",
@@ -24,7 +24,7 @@ const Hero: React.FC<Props> = ({ description, heading }) => {
   return (
     <div className={classes.heroContainer}>
       <Container>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           {heading}
         </Typography>
         <Typography variant="h5" gutterBottom color="textSecondary">

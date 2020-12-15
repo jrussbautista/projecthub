@@ -11,6 +11,7 @@ import Project from "pages/Project";
 import Projects from "pages/Projects";
 import CreateProject from "pages/CreateProject";
 import Profile from "pages/Profile";
+import NotFound from "pages/NotFound";
 import theme from "theme";
 
 function App() {
@@ -39,6 +40,9 @@ function App() {
                   component={CreateProject}
                   exact
                 />
+                <Route>
+                  <NotFound />
+                </Route>
               </Switch>
             </Layout>
           </ModalProvider>

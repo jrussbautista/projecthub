@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Typography, makeStyles } from "@material-ui/core";
-import ProjectList from "components/Project/ProjectList";
+import ProjectList from "components/project/ProjectList";
 import { PROJECTS } from "data/mock-data";
 
 const useStyles = makeStyles(() => ({

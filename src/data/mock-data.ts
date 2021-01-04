@@ -9,6 +9,9 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
   {
     id: "2",
@@ -18,6 +21,9 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
   {
     id: "3",
@@ -27,6 +33,9 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
   {
     id: "4",
@@ -36,6 +45,9 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
   {
     id: "5",
@@ -45,6 +57,9 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
   {
     id: "6",
@@ -54,6 +69,9 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
   {
     id: "7",
@@ -63,6 +81,9 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
   {
     id: "8",
@@ -72,5 +93,8 @@ export const PROJECTS: Project[] = [
     website_link: "bbb",
     image_url:
       "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
+    labels: [],
   },
 ];

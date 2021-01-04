@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link, useHistory } from "react-router-dom";
 import { useModal, useAuth } from "contexts";
-import SearchBar from "components/SearchBar";
+import SearchBar from "components/search-bar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Avatar from "@material-ui/core/Avatar";
@@ -78,8 +78,9 @@ export default function Header() {
       case "logout":
         logout();
         break;
+      case "settings":
       case "profile":
-        const url = `/profile`;
+        const url = `/${value}`;
         history.push(url);
         break;
     }
@@ -127,22 +128,17 @@ export default function Header() {
                     <MenuItem
                       onClick={() => handleNavigateDropDownMenu("profile")}
                     >
-                      Profile
+                      My Profile
                     </MenuItem>
                     <MenuItem
-                      onClick={() => handleNavigateDropDownMenu("my_projects")}
+                      onClick={() => handleNavigateDropDownMenu("settings")}
                     >
-                      My Projects
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => handleNavigateDropDownMenu("my_favorites")}
-                    >
-                      My Favorites
+                      My Settings
                     </MenuItem>
                     <MenuItem
                       onClick={() => handleNavigateDropDownMenu("logout")}
                     >
-                      Logout
+                      <Button color="primary">Log Out</Button>
                     </MenuItem>
                   </Menu>
                 </li>

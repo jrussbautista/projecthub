@@ -1,7 +1,6 @@
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 interface Props {
   description: string;
@@ -13,12 +12,9 @@ const useStyles = makeStyles(() => ({
     padding: 50,
     textAlign: "center",
   },
-  button: {
-    marginTop: 30,
-  },
 }));
 
-const Hero: React.FC<Props> = ({ description, heading }) => {
+const Hero: React.FC<Props> = ({ description, heading, children }) => {
   const classes = useStyles();
 
   return (
@@ -30,15 +26,7 @@ const Hero: React.FC<Props> = ({ description, heading }) => {
         <Typography variant="h5" gutterBottom color="textSecondary">
           {description}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          disableElevation
-          className={classes.button}
-        >
-          Join Community
-        </Button>
+        {children}
       </Container>
     </div>
   );

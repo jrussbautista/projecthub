@@ -1,5 +1,5 @@
-import { LoginView, SignUpView } from "components/Auth";
-import Modal from "components/Modal";
+import { LoginView, SignUpView } from "components/auth";
+import Modal from "components/modal";
 import { useModal } from "contexts";
 
 const ModalManager = () => {

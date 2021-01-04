@@ -1,6 +1,6 @@
 import { auth } from "lib/firebase";
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { AuthService } from "services/authService";
 import { Login, SignUp } from "types/Auth";
 import { User } from "types/User";
@@ -31,6 +31,7 @@ const AuthContext = createContext<State>({
 export const AuthProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultValue);
   const history = useHistory();
+  const location = useLocation();
 
   const setCurrentUser = (user: any) => {
     const userDetails: User = {
@@ -53,10 +54,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  const redirect = () => {
+    const { pathname } = location;
+    if (pathname === "/") {
+      history.push("/profile");
+    }
+  };
+
   const login = async ({ email, password }: Login) => {
     const user = await AuthService.login({ email, password });
     setCurrentUser(user);
-    history.push("/profile");
+    redirect();
   };
 
   const signUp = async ({
@@ -70,7 +78,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }) => {
     const user = await AuthService.signUp({ name, email, password });
     setCurrentUser(user);
-    history.push("/profile");
+    redirect();
   };
 
   const logout = async () => {

@@ -1,12 +1,31 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "styles/global.css";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ModalProvider, AuthProvider } from "contexts";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@material-ui/core";
+import { ScrollToTop } from "routing";
+import ModalManager from "components/modal-manager";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import theme from "theme";
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <ScrollToTop />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AuthProvider>
+          <ModalProvider>
+            <ModalManager />
+            <App />
+          </ModalProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );

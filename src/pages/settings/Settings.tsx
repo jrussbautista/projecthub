@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Container, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import { useAuth } from "contexts";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -35,12 +35,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface ProfileMenus {
+interface Menu {
   id: string;
   title: string;
 }
 
-const PROFILE_MENUS: ProfileMenus[] = [
+const MENUS: Menu[] = [
   {
     id: "edit-profile",
     title: "Edit Profile",
@@ -51,14 +51,12 @@ const PROFILE_MENUS: ProfileMenus[] = [
   },
 ];
 
-const Profile = () => {
+const Settings = () => {
   const classes = useStyles();
 
   const { currentUser } = useAuth();
 
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
-
-  const menus = PROFILE_MENUS;
 
   const handleClick = (value: string) => {
     const isAlreadySelected = selectedMenu === value;
@@ -68,43 +66,33 @@ const Profile = () => {
 
   return (
     <Container className={classes.container}>
-      <Typography variant="h4"> My Profile</Typography>
-
+      <Typography variant="h5"> My Settings</Typography>
       {currentUser && (
-        <>
-          <div className={classes.profile}>
-            <Avatar className={classes.avatar}>H</Avatar>
-            <div className={classes.right}>
-              <Typography variant="h5">{currentUser?.name}</Typography>
-              <Typography variant="h5">{currentUser?.email}</Typography>
+        <List component="nav">
+          {MENUS.map((menu) => (
+            <div key={menu.id}>
+              <ListItem button onClick={() => handleClick(menu.id)}>
+                <ListItemText primary={menu.title} />
+                {selectedMenu === menu.id ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Divider />
+              <Collapse
+                in={selectedMenu === menu.id}
+                timeout="auto"
+                unmountOnExit
+              >
+                <List component="div" disablePadding>
+                  <ListItem button className={classes.nested}>
+                    <ListItemText primary="Starred" />
+                  </ListItem>
+                </List>
+              </Collapse>
             </div>
-          </div>
-          <List component="nav">
-            {menus.map((menu) => (
-              <div key={menu.id}>
-                <ListItem button onClick={() => handleClick(menu.id)}>
-                  <ListItemText primary={menu.title} />
-                  {selectedMenu === menu.id ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Divider />
-                <Collapse
-                  in={selectedMenu === menu.id}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <List component="div" disablePadding>
-                    <ListItem button className={classes.nested}>
-                      <ListItemText primary="Starred" />
-                    </ListItem>
-                  </List>
-                </Collapse>
-              </div>
-            ))}
-          </List>
-        </>
+          ))}
+        </List>
       )}
     </Container>
   );
 };
 
-export default Profile;
+export default Settings;

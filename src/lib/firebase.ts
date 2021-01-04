@@ -19,4 +19,8 @@ const auth = firebase.auth();
 
 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-export { firebase, db, auth, timestamp };
+const increment = (count: number) => {
+  return firebase.firestore.FieldValue.increment(count);
+};
+
+export { firebase, db, auth, timestamp, increment };

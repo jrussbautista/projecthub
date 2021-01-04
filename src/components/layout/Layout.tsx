@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "components/Header";
+import Header from "components/header";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({

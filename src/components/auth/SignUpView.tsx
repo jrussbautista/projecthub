@@ -62,6 +62,7 @@ const SignUpView = () => {
       setLoading(false);
     }
   };
+
   return (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h5" gutterBottom className={classes.heading}>

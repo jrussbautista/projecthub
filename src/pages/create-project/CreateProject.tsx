@@ -9,11 +9,13 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
 import { useForm } from "react-hook-form";
-import { AddProject } from "types/Project";
+import { AddProject, Labels } from "types/Project";
 import { ProjectService } from "services/projectService";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+
+const defaultLabels: Labels = ["React", "Angular", "Vue"];
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,8 +53,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const labels = [{ title: "React" }, { title: "Angular" }, { title: "Vue" }];
-
 const CreateProject = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -60,20 +60,29 @@ const CreateProject = () => {
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [selectedLabels, setSelectedLabels] = useState<Labels>([]);
 
   const onSubmit = async (project: AddProject) => {
     try {
       setError(null);
       setPosting(true);
-      await ProjectService.addProject(project);
+      const newProject = {
+        ...project,
+        labels: selectedLabels,
+      };
+      const result = await ProjectService.addProject(newProject);
       setPosting(false);
       setSuccess(true);
-      history.push("/my-projects");
+      const url = `/project/${result.id}`;
+      history.push(url);
     } catch (error) {
-      console.log(error);
       setError("Unable to create project right now. Please try again later.");
       setPosting(false);
     }
+  };
+
+  const handleChangeLabel = (e: React.ChangeEvent<{}>, values: Labels) => {
+    setSelectedLabels(values);
   };
 
   return (
@@ -172,8 +181,9 @@ const CreateProject = () => {
         <Autocomplete
           multiple
           id="tags-standard"
-          options={labels}
-          getOptionLabel={(option) => option.title}
+          options={defaultLabels}
+          getOptionLabel={(option) => option}
+          onChange={handleChangeLabel}
           renderInput={(params) => (
             <TextField
               {...params}

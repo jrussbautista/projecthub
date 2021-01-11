@@ -49,6 +49,16 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "0.75rem",
       paddingLeft: 15,
     },
+    imageContainer: {
+      marginTop: 10,
+    },
+    image: {
+      width: 200,
+      height: 200,
+      backgroundSize: "cover",
+      border: `1px solid ${theme.palette.grey[400]}`,
+      backgroundPosition: "center",
+    },
   })
 );
 
@@ -60,6 +70,9 @@ const CreateProject = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const [imagePreview, setImagePreview] = useState<string | null | ArrayBuffer>(
+    null
+  );
 
   const { labels } = useLabels();
 
@@ -70,6 +83,7 @@ const CreateProject = () => {
       const newProject = {
         ...project,
         labels: selectedLabels,
+        image: imagePreview as string,
       };
       const result = await ProjectService.addProject(newProject);
       setPosting(false);
@@ -85,6 +99,16 @@ const CreateProject = () => {
   const handleChangeLabel = (e: React.ChangeEvent<{}>, values: Label[]) => {
     const selectedValues = values.map((value) => value.title);
     setSelectedLabels(selectedValues);
+  };
+
+  const handleFileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
 
   return (
@@ -204,6 +228,7 @@ const CreateProject = () => {
           ref={register({
             required: "Image is required field",
           })}
+          onChange={handleFileImageChange}
         />
         <label htmlFor="icon-button-file">
           <IconButton
@@ -214,7 +239,7 @@ const CreateProject = () => {
             <PhotoCamera />
           </IconButton>
           <Typography variant="body1" component="span">
-            Upload Screenshot
+            Upload Image
           </Typography>
         </label>
 
@@ -227,6 +252,15 @@ const CreateProject = () => {
           >
             {errors.image.message}
           </Typography>
+        )}
+
+        {imagePreview && (
+          <div className={classes.imageContainer}>
+            <div
+              className={classes.image}
+              style={{ backgroundImage: `url(${imagePreview})` }}
+            ></div>
+          </div>
         )}
 
         <div className={classes.btnCreateContainer}>

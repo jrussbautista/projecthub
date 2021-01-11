@@ -10,6 +10,7 @@ const addProject = ({
   website_link,
   github_link,
   labels = [],
+  image,
 }: AddProject) => {
   const currentUser = auth.currentUser;
 
@@ -19,12 +20,16 @@ const addProject = ({
 
   const projectRef = db.collection(PROJECT_COLLECTION);
 
+  // TODO: Upload image to firebase storage
+  const image_url = image;
+
   const newProject = {
     title,
     description,
     website_link,
     github_link,
     labels,
+    image_url,
     created_at: timestamp,
     updated_at: timestamp,
     user: {

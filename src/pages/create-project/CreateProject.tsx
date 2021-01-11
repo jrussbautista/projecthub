@@ -9,13 +9,12 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
 import { useForm } from "react-hook-form";
-import { AddProject, Labels } from "types/Project";
+import { AddProject, Label } from "types/Project";
 import { ProjectService } from "services/projectService";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
-const defaultLabels: Labels = ["React", "Angular", "Vue"];
+import useLabels from "hooks/use-labels";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -60,7 +59,9 @@ const CreateProject = () => {
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [selectedLabels, setSelectedLabels] = useState<Labels>([]);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+
+  const { labels } = useLabels();
 
   const onSubmit = async (project: AddProject) => {
     try {
@@ -81,8 +82,9 @@ const CreateProject = () => {
     }
   };
 
-  const handleChangeLabel = (e: React.ChangeEvent<{}>, values: Labels) => {
-    setSelectedLabels(values);
+  const handleChangeLabel = (e: React.ChangeEvent<{}>, values: Label[]) => {
+    const selectedValues = values.map((value) => value.title);
+    setSelectedLabels(selectedValues);
   };
 
   return (
@@ -177,12 +179,11 @@ const CreateProject = () => {
           margin="normal"
           inputRef={register}
         />
-
         <Autocomplete
           multiple
           id="tags-standard"
-          options={defaultLabels}
-          getOptionLabel={(option) => option}
+          options={labels}
+          getOptionLabel={(option) => option.title}
           onChange={handleChangeLabel}
           renderInput={(params) => (
             <TextField

@@ -1,4 +1,6 @@
-export type Labels = string[];
+export interface Label {
+  title: string;
+}
 
 export interface AddProject {
   title: string;
@@ -18,7 +20,7 @@ export interface Project {
   github_link: string;
   website_link: string;
   is_favorite?: boolean;
-  labels: Labels;
+  labels: string[];
   created_at: any;
   updated_at: any;
 }

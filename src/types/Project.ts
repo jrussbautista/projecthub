@@ -8,12 +8,12 @@ export interface AddProject {
   description: string;
   github_link: string;
   website_link: string;
-  image: string;
+  image_file: File;
   labels: string[];
 }
 
 export interface Project {
-  id?: string;
+  id: string;
   title: string;
   image_url: string;
   description: string;

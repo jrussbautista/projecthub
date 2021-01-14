@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBgs0COYCL-ixUJZdCvA6KPb3lzUYo-vLQ",
@@ -23,4 +24,6 @@ const increment = (count: number) => {
   return firebase.firestore.FieldValue.increment(count);
 };
 
-export { firebase, db, auth, timestamp, increment };
+const storage = firebase.storage();
+
+export { firebase, db, auth, timestamp, increment, storage };

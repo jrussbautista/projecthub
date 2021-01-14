@@ -11,7 +11,8 @@ import Button from "@material-ui/core/Button";
 import FavoriteButton from "components/favorite/FavoriteButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
-import { ProjectService } from "services/projectService";
+import { ProjectService } from "services/project-service";
+import { FavoriteService } from "services/favorites-service";
 import { Project } from "types/Project";
 import { useAuth, useModal } from "contexts";
 
@@ -83,7 +84,7 @@ const ProjectView = () => {
     }
     if (!project) return;
     setProject({ ...project, is_favorite: !project.is_favorite });
-    await ProjectService.toggleFavorite(id);
+    await FavoriteService.toggleFavorite(id);
   };
 
   if (loading) {

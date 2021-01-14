@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { useAuth, useModal } from "contexts";
 import Hero from "components/hero";
 import { HomeData } from "types/HomeData";
-import { HomeService } from "services/homeService";
+import { HomeService } from "services/home-service";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 

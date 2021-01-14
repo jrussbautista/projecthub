@@ -10,7 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
 import { useForm } from "react-hook-form";
 import { AddProject, Label } from "types/Project";
-import { ProjectService } from "services/projectService";
+import { ProjectService } from "services/project-service";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -62,10 +62,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+interface AddProjectForm extends AddProject {
+  image: string;
+}
+
 const CreateProject = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { register, handleSubmit, errors } = useForm<AddProject>();
+  const { register, handleSubmit, errors } = useForm<AddProjectForm>();
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -73,6 +77,7 @@ const CreateProject = () => {
   const [imagePreview, setImagePreview] = useState<string | null | ArrayBuffer>(
     null
   );
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const { labels } = useLabels();
 
@@ -83,7 +88,7 @@ const CreateProject = () => {
       const newProject = {
         ...project,
         labels: selectedLabels,
-        image: imagePreview as string,
+        imageFile: imageFile as File,
       };
       const result = await ProjectService.addProject(newProject);
       setPosting(false);
@@ -103,11 +108,13 @@ const CreateProject = () => {
 
   const handleFileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target?.files) {
+      const file = e.target.files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
+        setImageFile(file);
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -242,6 +249,8 @@ const CreateProject = () => {
             Upload Image
           </Typography>
         </label>
+
+        {}
 
         {errors.image && (
           <Typography

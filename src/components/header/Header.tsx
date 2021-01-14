@@ -80,7 +80,7 @@ export default function Header() {
         break;
       case "settings":
       case "profile":
-        const url = `/${value}`;
+        const url = `/user/${currentUser?.id}`;
         history.push(url);
         break;
     }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ProjectService } from "services/projectService";
+import { ProjectService } from "services/project-service";
 import { Project } from "types/Project";
 
 const useProjects = () => {

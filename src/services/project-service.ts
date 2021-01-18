@@ -32,8 +32,8 @@ const addProject = async ({
     updated_at: timestamp,
     user: {
       id: uid,
-      name: displayName,
-      image_url: photoURL,
+      name: displayName as string,
+      photo_url: photoURL as string,
     },
   };
 
@@ -56,27 +56,9 @@ const getProjects = async ({
   const getProjects = await query.get();
 
   return getProjects.docs.map((project) => {
-    const {
-      title,
-      description,
-      image_url,
-      github_link,
-      website_link,
-      labels,
-      updated_at,
-      created_at,
-    } = project.data() as Project;
-
     return {
+      ...(project.data() as Project),
       id: project.id,
-      labels,
-      title,
-      description,
-      image_url,
-      github_link,
-      website_link,
-      updated_at,
-      created_at,
     };
   });
 };

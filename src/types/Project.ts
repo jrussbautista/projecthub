@@ -25,6 +25,7 @@ export interface Project {
   labels: string[];
   created_at: any;
   updated_at: any;
+  user: User;
 }
 
 export type Field = "my_projects" | "all_projects";

@@ -24,27 +24,9 @@ const getUserProjects = async (userId: string): Promise<Project[]> => {
   const getProjectsRef = await projectsRef.get();
 
   return getProjectsRef.docs.map((project) => {
-    const {
-      title,
-      description,
-      image_url,
-      github_link,
-      website_link,
-      labels,
-      updated_at,
-      created_at,
-    } = project.data() as Project;
-
     return {
+      ...(project.data() as Project),
       id: project.id,
-      labels,
-      title,
-      description,
-      image_url,
-      github_link,
-      website_link,
-      updated_at,
-      created_at,
     };
   });
 };

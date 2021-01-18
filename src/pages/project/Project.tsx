@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { PROJECTS } from "data/mock-data";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
@@ -15,6 +14,7 @@ import { ProjectService } from "services/project-service";
 import { FavoriteService } from "services/favorites-service";
 import { Project } from "types/Project";
 import { useAuth, useModal } from "contexts";
+import UserDetails from "./UserDetails";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
   },
   loadingContainer: {
     textAlign: "center",
+  },
+  description: {
+    marginBottom: 20,
   },
 }));
 
@@ -119,13 +122,21 @@ const ProjectView = () => {
         </div>
         <div className={classes.cardDetails}>
           <div>
-            <Typography gutterBottom variant="h4">
+            <Typography gutterBottom variant="h5">
               {project.title}
             </Typography>
-            <Typography gutterBottom variant="h5" color="textSecondary">
+
+            <UserDetails user={project.user} />
+
+            <Typography
+              gutterBottom
+              variant="h6"
+              color="textSecondary"
+              className={classes.description}
+            >
               {project.description}
             </Typography>
-            <div></div>
+
             <Button
               className={classes.button}
               variant="contained"
@@ -150,7 +161,7 @@ const ProjectView = () => {
         <Typography variant="h5" gutterBottom>
           Related Projects
         </Typography>
-        <ProjectList projects={PROJECTS.slice(0, 4)} />
+        <ProjectList projects={[]} />
       </div>
     </Container>
   );

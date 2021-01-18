@@ -7,28 +7,7 @@ const FEATURED_PROJECTS_LIMIT = 8;
 const LATEST_PROJECTS_LIMIT = 20;
 
 const getProjectsCollection = (project: any) => {
-  const {
-    title,
-    description,
-    image_url,
-    github_link,
-    website_link,
-    labels,
-    updated_at,
-    created_at,
-  } = project.data() as Project;
-
-  return {
-    id: project.id,
-    labels,
-    title,
-    description,
-    image_url,
-    github_link,
-    website_link,
-    updated_at,
-    created_at,
-  };
+  return { ...(project.data() as Project), id: project.id };
 };
 
 const getHomeData = async (): Promise<HomeData> => {
@@ -36,9 +15,11 @@ const getHomeData = async (): Promise<HomeData> => {
 
   const getFeaturedProjects = await projectsRef
     .limit(FEATURED_PROJECTS_LIMIT)
+    .orderBy("favorites_count", "desc")
     .get();
   const getLatestProjects = await projectsRef
     .limit(LATEST_PROJECTS_LIMIT)
+    .orderBy("created_at", "desc")
     .get();
 
   const latestProjects = getLatestProjects.docs.map((project) =>

@@ -41,7 +41,7 @@ const FavoriteItem: React.FC<Props> = ({ project, onRemove, removing }) => {
 
   return (
     <Card className={`${classes.card} ${removing ? classes.removing : ""}`}>
-      <Link to={`/projects/${project.id}`}>
+      <Link to={`/project/${project.id}`}>
         <CardMedia
           image={project.image_url}
           title={project.title}

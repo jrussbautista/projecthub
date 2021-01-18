@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import { ProjectList } from "components/project";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import FavoriteButton from "components/favorite/FavoriteButton";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Alert from "@material-ui/lab/Alert";
 import { ProjectService } from "services/project-service";
 import { FavoriteService } from "services/favorites-service";
 import { Project } from "types/Project";
 import { useAuth, useModal } from "contexts";
+import { Status } from "types/Status";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
+import Button from "@material-ui/core/Button";
+import FavoriteButton from "components/favorite/FavoriteButton";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Alert from "@material-ui/lab/Alert";
 import UserDetails from "./UserDetails";
+import RelatedProjects from "./RelatedProjects";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   loadingContainer: {
     textAlign: "center",
+    marginTop: 30,
   },
   description: {
     marginBottom: 20,
@@ -57,9 +59,13 @@ const ProjectView = () => {
 
   const { id } = useParams<Params>();
 
-  const [loading, setLoading] = useState(true);
+  const [projectStatus, setProjectStatus] = useState<Status>("idle");
+  const [relatedProjectsStatus, setRelatedProjectsStatus] = useState<Status>(
+    "idle"
+  );
   const [project, setProject] = useState<Project | null>(null);
-  const [error, setError] = useState(null);
+  const [relatedProjects, setRelatedProjects] = useState<Project[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const { isAuthenticated } = useAuth();
   const { openModal } = useModal();
@@ -68,29 +74,45 @@ const ProjectView = () => {
     const fetchProject = async () => {
       try {
         setProject(null);
-        setLoading(true);
+        setProjectStatus("idle");
         const result = await ProjectService.getProject(id);
+        setIsFavorite(Boolean(result.is_favorite));
         setProject(result);
+        setProjectStatus("success");
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setError(null);
-        setLoading(false);
+        setProjectStatus("error");
       }
     };
     fetchProject();
   }, [id]);
+
+  useEffect(() => {
+    const fetchRelatedProjects = async (labels: string[]) => {
+      try {
+        setRelatedProjectsStatus("idle");
+        const results = await ProjectService.getRelatedProjects(labels);
+        setRelatedProjects(results);
+        setRelatedProjectsStatus("success");
+      } catch (error) {
+        setRelatedProjectsStatus("error");
+      }
+    };
+
+    if (project) {
+      fetchRelatedProjects(project.labels);
+    }
+  }, [project]);
 
   const handleToggleFavorite = async () => {
     if (!isAuthenticated) {
       return openModal("LOGIN_VIEW");
     }
     if (!project) return;
-    setProject({ ...project, is_favorite: !project.is_favorite });
+    setIsFavorite(!isFavorite);
     await FavoriteService.toggleFavorite(id);
   };
 
-  if (loading) {
+  if (projectStatus === "idle") {
     return (
       <Container className={classes.container}>
         <div className={classes.loadingContainer}>
@@ -100,7 +122,7 @@ const ProjectView = () => {
     );
   }
 
-  if (error || !project) {
+  if (projectStatus === "error" || !project) {
     return (
       <Container className={classes.container}>
         <Alert severity="error">
@@ -109,6 +131,27 @@ const ProjectView = () => {
       </Container>
     );
   }
+
+  const renderRelatedProjectsSection = () => {
+    if (relatedProjectsStatus === "idle") {
+      return (
+        <div className={classes.loadingContainer}>
+          <CircularProgress />
+        </div>
+      );
+    }
+
+    if (relatedProjectsStatus === "error") {
+      return (
+        <Alert severity="error">
+          Unable to get related project details right now. Please try again
+          later.
+        </Alert>
+      );
+    }
+
+    return <RelatedProjects projects={relatedProjects} />;
+  };
 
   return (
     <Container className={classes.container}>
@@ -137,32 +180,38 @@ const ProjectView = () => {
               {project.description}
             </Typography>
 
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              disableElevation
-            >
-              Website
-            </Button>
-            <Button variant="contained" color="default" disableElevation>
-              Github
-            </Button>
+            {project.website_link && (
+              <Button
+                href={project.website_link}
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                disableElevation
+              >
+                Website
+              </Button>
+            )}
+
+            {project.github_link && (
+              <Button
+                href={project.github_link}
+                variant="contained"
+                color="default"
+                disableElevation
+              >
+                Github
+              </Button>
+            )}
           </div>
           <div>
             <FavoriteButton
-              isFavorite={Boolean(project.is_favorite)}
+              isFavorite={isFavorite}
               onClick={handleToggleFavorite}
             />
           </div>
         </div>
       </Card>
-      <div className={classes.section}>
-        <Typography variant="h5" gutterBottom>
-          Related Projects
-        </Typography>
-        <ProjectList projects={[]} />
-      </div>
+      {renderRelatedProjectsSection()}
     </Container>
   );
 };

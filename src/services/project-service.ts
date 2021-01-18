@@ -3,6 +3,9 @@ import { AddProject, Project } from "types/Project";
 import { FirebaseStorage } from "lib/firebase-storage";
 import { PROJECTS_COLLECTION, FAVORITES_COLLECTION } from "./service-constants";
 
+const RELATED_PROJECTS_LIMIT = 4;
+const PROJECTS_LIMIT = 20;
+
 const addProject = async ({
   title,
   description,
@@ -53,7 +56,7 @@ const getProjects = async ({
     query = query.where("labels", "array-contains-any", labels);
   }
 
-  const getProjects = await query.get();
+  const getProjects = await query.limit(PROJECTS_LIMIT).get();
 
   return getProjects.docs.map((project) => {
     return {
@@ -91,8 +94,28 @@ export const getProject = async (projectId: string): Promise<Project> => {
   };
 };
 
+const getRelatedProjects = async (labels: string[]) => {
+  let query;
+
+  query = db.collection(PROJECTS_COLLECTION);
+
+  if (labels.length > 0) {
+    query = query.where("labels", "array-contains-any", labels);
+  }
+
+  const getProjectsRef = await query.limit(RELATED_PROJECTS_LIMIT).get();
+
+  return getProjectsRef.docs.map((project) => {
+    return {
+      ...(project.data() as Project),
+      id: project.id,
+    };
+  });
+};
+
 export const ProjectService = {
   addProject,
   getProjects,
   getProject,
+  getRelatedProjects,
 };

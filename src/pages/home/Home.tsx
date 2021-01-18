@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { ProjectList } from "components/project";
@@ -86,7 +86,7 @@ const Home = () => {
       </Hero>
       <Container>
         {error && <p> Something went wrong. Please try again later. </p>}
-        {loading || error ? (
+        {loading ? (
           <div className={classes.loadingContainer}>
             <CircularProgress />
           </div>
@@ -110,6 +110,8 @@ const Home = () => {
                 color="primary"
                 size="large"
                 disableElevation
+                component={Link}
+                to="/projects"
               >
                 View All Projects
               </Button>

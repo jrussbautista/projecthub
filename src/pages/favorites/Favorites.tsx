@@ -5,7 +5,8 @@ import { FavoriteService } from "services/favorites-service";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import { Project } from "types/Project";
-import { ProjectList } from "components/project";
+import FavoriteItem from "./FavoriteItem";
+import emptyImage from "assets/images/empty.svg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,6 +20,15 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginTop: 20,
   },
+  emptyText: {
+    marginTop: 40,
+  },
+  emptyContainer: {
+    textAlign: "center",
+  },
+  emptyImage: {
+    maxWidth: 300,
+  },
 }));
 
 const Favorites = () => {
@@ -26,6 +36,7 @@ const Favorites = () => {
 
   const [status, setStatus] = useState("idle");
   const [favorites, setFavorites] = useState<Project[]>([]);
+  const [removingId, setRemovingId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -36,11 +47,24 @@ const Favorites = () => {
         setStatus("success");
       } catch (error) {
         setStatus("error");
-        console.error(error);
       }
     };
     fetchFavorites();
   }, []);
+
+  const handleRemove = async (id: string) => {
+    try {
+      setRemovingId(id);
+      await FavoriteService.toggleFavorite(id);
+      const filterFavorites = favorites.filter(
+        (favorite) => favorite.id !== id
+      );
+      setFavorites(filterFavorites);
+    } catch (error) {
+      alert("Error");
+      setRemovingId(null);
+    }
+  };
 
   if (status === "idle") {
     return (
@@ -67,7 +91,28 @@ const Favorites = () => {
       <Typography variant="h6" className={classes.heading}>
         My Favorites
       </Typography>
-      <ProjectList projects={favorites} />
+
+      {favorites.length > 0 ? (
+        favorites.map((favorite) => (
+          <FavoriteItem
+            key={favorite.id}
+            project={favorite}
+            onRemove={handleRemove}
+            removing={removingId === favorite.id}
+          />
+        ))
+      ) : (
+        <div className={classes.emptyContainer}>
+          <img
+            src={emptyImage}
+            alt="empty favorites"
+            className={classes.emptyImage}
+          />
+          <Typography variant="body1" className={classes.emptyText}>
+            Your favorites is empty :(
+          </Typography>
+        </div>
+      )}
     </Container>
   );
 };

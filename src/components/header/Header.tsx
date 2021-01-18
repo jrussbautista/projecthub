@@ -68,7 +68,7 @@ export default function Header() {
   };
 
   const handleSubmit = (value: string) => {
-    const url = `/projects?q=${value}`;
+    const url = `/projects?search=${value}`;
     history.push(url);
   };
 
@@ -79,9 +79,13 @@ export default function Header() {
         logout();
         break;
       case "settings":
+        history.push("/settings");
+        break;
       case "profile":
-        const url = `/user/${currentUser?.id}`;
-        history.push(url);
+        history.push(`/user/${currentUser?.id}`);
+        break;
+      case "favorites":
+        history.push("/favorites");
         break;
     }
   };
@@ -129,6 +133,11 @@ export default function Header() {
                       onClick={() => handleNavigateDropDownMenu("profile")}
                     >
                       My Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => handleNavigateDropDownMenu("favorites")}
+                    >
+                      My Favorites
                     </MenuItem>
                     <MenuItem
                       onClick={() => handleNavigateDropDownMenu("settings")}

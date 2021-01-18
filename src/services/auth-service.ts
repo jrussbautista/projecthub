@@ -43,6 +43,7 @@ const signUp = async ({ name, email, password }: SignUp) => {
         photo_url: null,
         created_at: timestamp,
         updated_at: timestamp,
+        email_verified: false,
       };
       await auth.currentUser?.updateProfile({ displayName: name });
       await db.collection("users").doc(uid).set(newUser);

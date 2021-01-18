@@ -40,10 +40,20 @@ const addProject = async ({
   return projectRef.add(newProject);
 };
 
-const getProjects = async (): Promise<Project[]> => {
-  let projectsRef = db.collection(PROJECTS_COLLECTION);
+const getProjects = async ({
+  labels = [],
+}: {
+  labels?: string[];
+} = {}): Promise<Project[]> => {
+  let query;
 
-  const getProjects = await projectsRef.get();
+  query = db.collection(PROJECTS_COLLECTION);
+
+  if (labels.length > 0) {
+    query = query.where("labels", "array-contains-any", labels);
+  }
+
+  const getProjects = await query.get();
 
   return getProjects.docs.map((project) => {
     const {

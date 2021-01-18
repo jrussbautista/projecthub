@@ -80,20 +80,28 @@ const UserPage = () => {
     );
   }
 
-  return (
-    <Container className={classes.container}>
-      <UserDetails user={user} />
-      {userProjectStatus === "idle" ? (
+  const renderUserProjectsSection = () => {
+    if (userProjectStatus === "idle") {
+      return (
         <div className={classes.loadingContainer}>
           <CircularProgress size={30} />
         </div>
-      ) : userProjectStatus === "error" ? (
-        <Alert severity="error">
-          Unable to load user projects right now. Please try again later.
-        </Alert>
-      ) : (
-        <UserProjects projects={userProjects} />
-      )}
+      );
+    }
+
+    if (userProjectStatus === "error") {
+      <Alert severity="error">
+        Unable to load user projects right now. Please try again later.
+      </Alert>;
+    }
+
+    return <UserProjects projects={userProjects} />;
+  };
+
+  return (
+    <Container className={classes.container}>
+      <UserDetails user={user} />
+      {renderUserProjectsSection()}
     </Container>
   );
 };

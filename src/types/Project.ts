@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface Label {
   title: string;
 }

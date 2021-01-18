@@ -125,6 +125,7 @@ const ProjectView = () => {
             <Typography gutterBottom variant="h5" color="textSecondary">
               {project.description}
             </Typography>
+            <div></div>
             <Button
               className={classes.button}
               variant="contained"

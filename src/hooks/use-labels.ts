@@ -1,30 +1,28 @@
 import { useState, useEffect } from "react";
 import { LabelService } from "services/label-service";
 import { Label } from "types/Project";
+import { Status } from "types/Status";
 
 const useLabels = () => {
   const [labels, setLabels] = useState<Label[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState<Status>("idle");
 
   useEffect(() => {
     const fetchLabels = async () => {
       try {
-        setLoading(true);
+        setStatus("idle");
         const results = await LabelService.getLabels();
         setLabels(results);
+        setStatus("success");
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        setStatus("error");
       }
     };
     fetchLabels();
   }, []);
 
   return {
-    error,
-    loading,
+    status,
     labels,
   };
 };

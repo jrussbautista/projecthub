@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   emptyImage: {
     maxWidth: 300,
   },
+  errorContainer: {
+    marginBottom: 20,
+  },
 }));
 
 const Favorites = () => {
@@ -37,6 +40,7 @@ const Favorites = () => {
   const [status, setStatus] = useState("idle");
   const [favorites, setFavorites] = useState<Project[]>([]);
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -54,6 +58,7 @@ const Favorites = () => {
 
   const handleRemove = async (id: string) => {
     try {
+      setError(null);
       setRemovingId(id);
       await FavoriteService.toggleFavorite(id);
       const filterFavorites = favorites.filter(
@@ -61,7 +66,9 @@ const Favorites = () => {
       );
       setFavorites(filterFavorites);
     } catch (error) {
-      alert("Error");
+      setError(
+        "Unable to remove your favorite right now. Please try again later."
+      );
       setRemovingId(null);
     }
   };
@@ -91,6 +98,12 @@ const Favorites = () => {
       <Typography variant="h6" className={classes.heading}>
         My Favorites
       </Typography>
+
+      {error && (
+        <Alert severity="error" className={classes.errorContainer}>
+          {error}
+        </Alert>
+      )}
 
       {favorites.length > 0 ? (
         favorites.map((favorite) => (

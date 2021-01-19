@@ -2,7 +2,7 @@ import { auth } from "lib/firebase";
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { AuthService } from "services/auth-service";
-import { Login, SignUp } from "types/Auth";
+import { Login, SignUp, UpdateProfile } from "types/Auth";
 import { User } from "types/User";
 import reducer from "./authReducer";
 
@@ -12,6 +12,7 @@ interface State {
   currentUser: User | null;
   login(value: Login): void;
   signUp(value: SignUp): void;
+  updateProfile(value: UpdateProfile): void;
   logout(): void;
 }
 
@@ -26,6 +27,7 @@ const AuthContext = createContext<State>({
   login: () => null,
   signUp: () => null,
   logout: () => null,
+  updateProfile: () => null,
 });
 
 export const AuthProvider: React.FC = ({ children }) => {
@@ -68,18 +70,20 @@ export const AuthProvider: React.FC = ({ children }) => {
     redirect(user?.uid as string);
   };
 
-  const signUp = async ({
-    name,
-    email,
-    password,
-  }: {
-    name: string;
-    email: string;
-    password: string;
-  }) => {
+  const signUp = async ({ name, email, password }: SignUp) => {
     const user = await AuthService.signUp({ name, email, password });
     setCurrentUser(user);
     redirect(user?.uid as string);
+  };
+
+  const updateProfile = async ({ name, email, password }: UpdateProfile) => {
+    await AuthService.updateProfile({ name, email, password });
+    const updatedUser = {
+      ...state.currentUser,
+      displayName: name,
+      email,
+    };
+    setCurrentUser(updatedUser);
   };
 
   const logout = async () => {
@@ -89,7 +93,9 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout, signUp }}>
+    <AuthContext.Provider
+      value={{ ...state, login, logout, signUp, updateProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );

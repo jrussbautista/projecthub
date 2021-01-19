@@ -121,7 +121,9 @@ export default function Header() {
                     onClick={handleOpenDropdown}
                     className={classes.avatarButtonContainer}
                   >
-                    <Avatar className={classes.avatarBackgroundColor}>H</Avatar>
+                    <Avatar className={classes.avatarBackgroundColor}>
+                      {currentUser.name.charAt(0).toUpperCase()}
+                    </Avatar>
                   </button>
                   <Menu
                     anchorEl={anchorEl}

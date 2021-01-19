@@ -1,5 +1,6 @@
-import { auth, db, timestamp } from "lib/firebase";
-import { SignUp } from "types/Auth";
+import { auth, db, timestamp, firebase } from "lib/firebase";
+import { UpdateProfile, SignUp, ChangePassword } from "types/Auth";
+import { USERS_COLLECTION } from "./service-constants";
 
 const login = async ({
   email,
@@ -46,12 +47,65 @@ const signUp = async ({ name, email, password }: SignUp) => {
         email_verified: false,
       };
       await auth.currentUser?.updateProfile({ displayName: name });
-      await db.collection("users").doc(uid).set(newUser);
+      await db.collection(USERS_COLLECTION).doc(uid).set(newUser);
       return user;
     }
   } catch (error) {
     throw new Error(error);
   }
+};
+
+const reauthenticate = (currentPassword: string) => {
+  const user = auth.currentUser;
+  if (!user) throw new Error("Please login first");
+
+  const { email } = user;
+
+  const cred = firebase.auth.EmailAuthProvider.credential(
+    email as string,
+    currentPassword
+  );
+  return user.reauthenticateWithCredential(cred);
+};
+
+const updateProfile = async ({ name, email, password }: UpdateProfile) => {
+  const { currentUser } = auth;
+  if (!currentUser) throw new Error("Please login first");
+
+  if (currentUser.email !== email) {
+    if (!password)
+      throw new Error("Password is required to update your profile");
+    await reauthenticate(password);
+    await currentUser?.updateEmail(email);
+  }
+
+  if (currentUser.displayName !== name) {
+    await currentUser?.updateProfile({ displayName: name });
+  }
+
+  // update only if email or displayName has changed
+  if (currentUser.email !== email || currentUser.displayName !== name) {
+    return db
+      .collection(USERS_COLLECTION)
+      .doc(currentUser.uid)
+      .update({ name, email });
+  }
+};
+
+const changePassword = async ({
+  oldPassword,
+  newPassword,
+  confirmNewPassword,
+}: ChangePassword) => {
+  const { currentUser } = auth;
+
+  if (!currentUser) throw new Error("Please login first");
+
+  if (newPassword !== confirmNewPassword)
+    throw new Error("New password does not match with confirm new password");
+
+  await reauthenticate(oldPassword);
+  return currentUser.updatePassword(newPassword);
 };
 
 const logout = async () => {
@@ -66,4 +120,6 @@ export const AuthService = {
   login,
   logout,
   signUp,
+  updateProfile,
+  changePassword,
 };

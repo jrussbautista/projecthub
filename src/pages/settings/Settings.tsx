@@ -9,6 +9,8 @@ import Divider from "@material-ui/core/Divider";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
+import ChangePassword from "./ChangePassword";
+import EditProfile from "./EditProfile";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -64,6 +66,15 @@ const Settings = () => {
     setSelectedMenu(value);
   };
 
+  const renderSelectedMenu = () => {
+    switch (selectedMenu) {
+      case "edit-profile":
+        return <EditProfile />;
+      case "change-password":
+        return <ChangePassword />;
+    }
+  };
+
   return (
     <Container className={classes.container}>
       <Typography variant="h5"> My Settings</Typography>
@@ -81,11 +92,7 @@ const Settings = () => {
                 timeout="auto"
                 unmountOnExit
               >
-                <List component="div" disablePadding>
-                  <ListItem button className={classes.nested}>
-                    <ListItemText primary="Starred" />
-                  </ListItem>
-                </List>
+                <List component="div">{renderSelectedMenu()}</List>
               </Collapse>
             </div>
           ))}

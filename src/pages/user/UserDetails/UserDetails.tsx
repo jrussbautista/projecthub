@@ -29,7 +29,9 @@ const UserDetails: React.FC<Props> = ({ user }) => {
 
   return (
     <div className={classes.user}>
-      <Avatar className={classes.avatar}>H</Avatar>
+      <Avatar className={classes.avatar}>
+        {user.name?.charAt(0).toUpperCase()}
+      </Avatar>
       <div className={classes.right}>
         <Typography variant="h6">{user.name}</Typography>
         <Typography variant="body1">{user.email}</Typography>

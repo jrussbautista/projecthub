@@ -122,7 +122,7 @@ export default function Header() {
                     className={classes.avatarButtonContainer}
                   >
                     <Avatar className={classes.avatarBackgroundColor}>
-                      {currentUser.name.charAt(0).toUpperCase()}
+                      {currentUser.name?.charAt(0).toUpperCase()}
                     </Avatar>
                   </button>
                   <Menu

@@ -6,9 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
+import { SignUp } from "types/Auth";
 import { useModal } from "contexts";
 import { useAuth } from "contexts/auth/AuthContext";
-import { SignUp } from "types/Auth";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -58,6 +58,7 @@ const SignUpView = () => {
       setLoading(false);
       closeModal();
     } catch (error) {
+      console.log(error);
       setError(error.message);
       setLoading(false);
     }
@@ -144,7 +145,7 @@ const SignUpView = () => {
         <Button
           color="primary"
           className={classes.link}
-          onClick={() => openModal("LOG_IN_VIEW")}
+          onClick={() => openModal("LOGIN_VIEW")}
         >
           Log In
         </Button>

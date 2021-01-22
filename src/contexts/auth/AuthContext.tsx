@@ -47,11 +47,12 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        return setCurrentUser(user);
+        setCurrentUser(user);
+      } else {
+        dispatch({ type: "LOG_OUT" });
       }
-      dispatch({ type: "LOG_OUT" });
     });
     return () => unsubscribe();
   }, []);
@@ -69,6 +70,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     setCurrentUser(user);
     redirect(user?.uid as string);
   };
+
+  const loginWithGoogle = async () => {};
+
+  const loginWithGithub = async () => {};
 
   const signUp = async ({ name, email, password }: SignUp) => {
     const user = await AuthService.signUp({ name, email, password });

@@ -9,6 +9,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useModal } from "contexts";
 import { useAuth } from "contexts/auth/AuthContext";
 import { Login } from "types/Auth";
+import SocialLogin from "./SocialLogin";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   },
   linkContainer: {
     textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   link: {
     textTransform: "none",
@@ -62,6 +66,7 @@ const LoginView = () => {
       setLoading(false);
     }
   };
+
   return (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h5" gutterBottom className={classes.heading}>
@@ -130,6 +135,7 @@ const LoginView = () => {
           Sign Up
         </Button>
       </div>
+      <SocialLogin />
     </form>
   );
 };

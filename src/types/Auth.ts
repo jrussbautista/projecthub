@@ -19,3 +19,5 @@ export interface SignUp {
   email: string;
   password: string;
 }
+
+export type Provider = "github" | "google";

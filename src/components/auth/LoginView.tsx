@@ -6,8 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
-import { useModal } from "contexts";
-import { useAuth } from "contexts/auth/AuthContext";
+import { useModal, useAuth } from "contexts";
 import { Login } from "types/Auth";
 import SocialLogin from "./SocialLogin";
 
@@ -65,6 +64,10 @@ const LoginView = () => {
       setError(error.message);
       setLoading(false);
     }
+  };
+
+  const handleSocialError = (err: string) => {
+    setError(err);
   };
 
   return (
@@ -135,7 +138,7 @@ const LoginView = () => {
           Sign Up
         </Button>
       </div>
-      <SocialLogin />
+      <SocialLogin onError={handleSocialError} />
     </form>
   );
 };

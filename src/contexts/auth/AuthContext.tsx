@@ -2,7 +2,7 @@ import { auth } from "lib/firebase";
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { AuthService } from "services/auth-service";
-import { Login, SignUp, UpdateProfile } from "types/Auth";
+import { Login, SignUp, UpdateProfile, Provider } from "types/Auth";
 import { User } from "types/User";
 import reducer from "./authReducer";
 
@@ -11,6 +11,7 @@ interface State {
   isLoading: boolean;
   currentUser: User | null;
   login(value: Login): void;
+  socialLogin(provider: Provider): void;
   signUp(value: SignUp): void;
   updateProfile(value: UpdateProfile): void;
   logout(): void;
@@ -27,6 +28,7 @@ const AuthContext = createContext<State>({
   login: () => null,
   signUp: () => null,
   logout: () => null,
+  socialLogin: () => null,
   updateProfile: () => null,
 });
 
@@ -71,9 +73,11 @@ export const AuthProvider: React.FC = ({ children }) => {
     redirect(user?.uid as string);
   };
 
-  const loginWithGoogle = async () => {};
-
-  const loginWithGithub = async () => {};
+  const socialLogin = async (provider: Provider) => {
+    const user = await AuthService.socialLogin(provider);
+    setCurrentUser(user);
+    redirect(user?.uid as string);
+  };
 
   const signUp = async ({ name, email, password }: SignUp) => {
     const user = await AuthService.signUp({ name, email, password });
@@ -99,7 +103,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ ...state, login, logout, signUp, updateProfile }}
+      value={{ ...state, login, logout, socialLogin, signUp, updateProfile }}
     >
       {children}
     </AuthContext.Provider>

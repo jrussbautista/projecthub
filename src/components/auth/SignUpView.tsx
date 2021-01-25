@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { SignUp } from "types/Auth";
+import { useModal, useAuth } from "contexts";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
@@ -6,9 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
-import { SignUp } from "types/Auth";
-import { useModal } from "contexts";
-import { useAuth } from "contexts/auth/AuthContext";
+import SocialLogin from "./SocialLogin";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -62,6 +62,10 @@ const SignUpView = () => {
       setError(error.message);
       setLoading(false);
     }
+  };
+
+  const handleSocialError = (err: string) => {
+    setError(err);
   };
 
   return (
@@ -150,6 +154,7 @@ const SignUpView = () => {
           Log In
         </Button>
       </div>
+      <SocialLogin onError={handleSocialError} />
     </form>
   );
 };

@@ -63,21 +63,39 @@ const signUp = async ({ name, email, password }: SignUp) => {
 };
 
 const socialLogin = async (provider: Provider) => {
-  let selectedProvider: firebase.auth.AuthProvider;
+  try {
+    let selectedProvider: firebase.auth.AuthProvider;
 
-  switch (provider) {
-    case "google":
-      selectedProvider = new firebase.auth.GoogleAuthProvider();
-      break;
-    default:
-      throw new Error("Unknown provider");
-  }
+    switch (provider) {
+      case "google":
+        selectedProvider = new firebase.auth.GoogleAuthProvider();
+        break;
+      case "github":
+        selectedProvider = new firebase.auth.GithubAuthProvider();
+        break;
+      default:
+        throw new Error("Unknown provider");
+    }
 
-  const { user, additionalUserInfo } = await auth.signInWithPopup(
-    selectedProvider
-  );
-  if (additionalUserInfo?.isNewUser) {
-    await createUser(user);
+    const { user, additionalUserInfo } = await auth.signInWithPopup(
+      selectedProvider
+    );
+    if (additionalUserInfo?.isNewUser) {
+      await createUser(user);
+    }
+
+    return user;
+  } catch (error) {
+    let errorMessage = "";
+    switch (error.code) {
+      case "auth/account-exists-with-different-credential":
+        errorMessage =
+          "An account already exists with the same email address but different sign-in credentials.";
+        break;
+      default:
+        errorMessage = `Unable to login with ${provider} right now. Please try again later`;
+    }
+    throw new Error(errorMessage);
   }
 };
 

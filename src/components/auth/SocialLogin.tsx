@@ -2,8 +2,8 @@ import Button from "@material-ui/core/Button";
 import Google from "components/icons/Google";
 import { makeStyles } from "@material-ui/core/styles";
 import Github from "components/icons/Github";
-import { AuthService } from "services/auth-service";
-import { useModal } from "contexts";
+import { useAuth, useModal } from "contexts";
+import { Provider } from "types/Auth";
 
 const useStyles = makeStyles((theme) => ({
   buttonsContainer: {
@@ -22,17 +22,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SocialLogin: React.FC = () => {
+interface Props {
+  onError(err: string): void;
+}
+
+const SocialLogin: React.FC<Props> = ({ onError }) => {
   const { closeModal } = useModal();
+  const { socialLogin } = useAuth();
 
   const classes = useStyles();
 
-  const handleLoginWithGoogle = async () => {
+  const handleSocialLogin = async (provider: Provider) => {
     try {
-      await AuthService.socialLogin("google");
+      await socialLogin(provider);
       closeModal();
     } catch (error) {
-      alert("Unable to login with google right now. Please try again later.");
+      onError(error.message);
     }
   };
 
@@ -45,7 +50,7 @@ const SocialLogin: React.FC = () => {
         size="large"
         className={classes.button}
         disableElevation
-        onClick={handleLoginWithGoogle}
+        onClick={() => handleSocialLogin("google")}
       >
         <span className={classes.buttonText}>Log In with Google</span>
         <Google />
@@ -58,6 +63,7 @@ const SocialLogin: React.FC = () => {
         className={`${classes.button} ${classes.buttonGithub}`}
         color="default"
         disableElevation
+        onClick={() => handleSocialLogin("github")}
       >
         <span className={classes.buttonText}>Log In with Github</span>
         <Github />

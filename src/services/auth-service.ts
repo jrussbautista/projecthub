@@ -152,6 +152,23 @@ const changePassword = async ({
   return currentUser.updatePassword(newPassword);
 };
 
+const sendResetPasswordEmail = async (email: string) => {
+  try {
+    return await auth.sendPasswordResetEmail(email);
+  } catch (error) {
+    let errorMessage = "";
+    switch (error.code) {
+      case "auth/user-not-found":
+        errorMessage = "There's no registered account with that email";
+        break;
+      default:
+        errorMessage =
+          "Unable to send password reset right now. Please try again later.";
+    }
+    throw new Error(errorMessage);
+  }
+};
+
 const logout = async () => {
   return auth.signOut();
 };
@@ -163,4 +180,5 @@ export const AuthService = {
   socialLogin,
   updateProfile,
   changePassword,
+  sendResetPasswordEmail,
 };

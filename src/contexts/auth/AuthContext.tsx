@@ -10,11 +10,12 @@ interface State {
   isAuthenticated: boolean;
   isLoading: boolean;
   currentUser: User | null;
-  login(value: Login): void;
-  socialLogin(provider: Provider): void;
-  signUp(value: SignUp): void;
-  updateProfile(value: UpdateProfile): void;
-  logout(): void;
+  login(value: Login): Promise<void>;
+  socialLogin(provider: Provider): Promise<void>;
+  signUp(value: SignUp): Promise<void>;
+  updateProfile(value: UpdateProfile): Promise<void>;
+  sendPasswordReset(email: string): Promise<void>;
+  logout(): Promise<void>;
 }
 
 const defaultValue = {
@@ -25,11 +26,12 @@ const defaultValue = {
 
 const AuthContext = createContext<State>({
   ...defaultValue,
-  login: () => null,
-  signUp: () => null,
-  logout: () => null,
-  socialLogin: () => null,
-  updateProfile: () => null,
+  login: async () => {},
+  signUp: async () => {},
+  logout: async () => {},
+  socialLogin: async () => {},
+  updateProfile: async () => {},
+  sendPasswordReset: async () => {},
 });
 
 export const AuthProvider: React.FC = ({ children }) => {
@@ -95,6 +97,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     setCurrentUser(updatedUser);
   };
 
+  const sendPasswordReset = async (email: string) => {
+    return AuthService.sendResetPasswordEmail(email);
+  };
+
   const logout = async () => {
     await AuthService.logout();
     dispatch({ type: "LOG_OUT" });
@@ -103,7 +109,15 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ ...state, login, logout, socialLogin, signUp, updateProfile }}
+      value={{
+        ...state,
+        login,
+        logout,
+        socialLogin,
+        signUp,
+        updateProfile,
+        sendPasswordReset,
+      }}
     >
       {children}
     </AuthContext.Provider>

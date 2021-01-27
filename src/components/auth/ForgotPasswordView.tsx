@@ -7,8 +7,6 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import { useModal, useAuth } from "contexts";
-import { Login } from "types/Auth";
-import SocialLogin from "./SocialLogin";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -36,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textTransform: "none",
   },
-  errorContainer: {
+  alertContainer: {
     marginTop: 20,
     marginBottom: 20,
   },
@@ -47,36 +45,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginView = () => {
+interface ForgotPasswordForm {
+  email: string;
+}
+
+const ForgotPasswordView = () => {
   const classes = useStyles();
 
-  const { login } = useAuth();
-  const { openModal, closeModal } = useModal();
+  const { sendPasswordReset } = useAuth();
+  const { closeModal, openModal } = useModal();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
-  const { register, handleSubmit, errors } = useForm<Login>();
+  const { register, handleSubmit, errors } = useForm<ForgotPasswordForm>();
 
-  const onSubmit = async ({ email, password }: Login) => {
+  const onSubmit = async ({ email }: ForgotPasswordForm) => {
     try {
+      setSuccess(false);
       setLoading(true);
       setError(null);
-      await login({ email, password });
+      await sendPasswordReset(email);
       setLoading(false);
-      closeModal();
+      setSuccess(true);
     } catch (error) {
       setError(error.message);
       setLoading(false);
+      setSuccess(false);
     }
-  };
-
-  const handleSocialError = (err: string) => {
-    setError(err);
-  };
-
-  const handleOpenForgotPasswordModal = () => {
-    openModal("FORGOT_PASSWORD_VIEW");
   };
 
   return (
@@ -84,8 +81,13 @@ const LoginView = () => {
       <Typography variant="h5" gutterBottom className={classes.heading}>
         ProjectHub
       </Typography>
+      {success && (
+        <Alert className={classes.alertContainer} severity="success">
+          Successfully email sent. Please check your email.
+        </Alert>
+      )}
       {error && (
-        <Alert className={classes.errorContainer} severity="error">
+        <Alert className={classes.alertContainer} severity="error">
           {error}
         </Alert>
       )}
@@ -107,32 +109,7 @@ const LoginView = () => {
         error={Boolean(errors.email)}
         helperText={errors.email && errors.email.message}
       />
-      <TextField
-        id="standard-basic"
-        label="Password"
-        name="password"
-        type="password"
-        className={classes.input}
-        autoComplete="true"
-        fullWidth
-        inputRef={register({
-          required: "Password is required field",
-          minLength: {
-            value: 6,
-            message: "Password must be at least 6 characters long",
-          },
-        })}
-        error={Boolean(errors.password)}
-        helperText={errors.password && errors.password.message}
-      />
-      <Button
-        variant="text"
-        className={classes.forgotPasswordButton}
-        color="primary"
-        onClick={handleOpenForgotPasswordModal}
-      >
-        Forgot your password?
-      </Button>
+
       <Button
         className={classes.button}
         fullWidth
@@ -143,7 +120,7 @@ const LoginView = () => {
         type="submit"
         disabled={loading}
       >
-        {loading ? <CircularProgress size={30} /> : "Log In"}
+        {loading ? <CircularProgress size={30} /> : "Submit"}
       </Button>
       <div className={classes.linkContainer}>
         <span>Don't have an account?</span>
@@ -155,9 +132,8 @@ const LoginView = () => {
           Sign Up
         </Button>
       </div>
-      <SocialLogin onError={handleSocialError} />
     </form>
   );
 };
 
-export default LoginView;
+export default ForgotPasswordView;

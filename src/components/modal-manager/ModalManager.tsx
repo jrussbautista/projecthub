@@ -1,4 +1,4 @@
-import { LoginView, SignUpView } from "components/auth";
+import { LoginView, SignUpView, ForgotPasswordView } from "components/auth";
 import Modal from "components/modal";
 import { useModal } from "contexts";
 
@@ -11,8 +11,8 @@ const ModalManager = () => {
         return <LoginView />;
       case "SIGN_UP_VIEW":
         return <SignUpView />;
-      default:
-        break;
+      case "FORGOT_PASSWORD_VIEW":
+        return <ForgotPasswordView />;
     }
   };
 

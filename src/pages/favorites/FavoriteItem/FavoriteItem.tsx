@@ -15,17 +15,33 @@ interface Props {
   removing: boolean;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
-    display: "flex",
     marginBottom: 20,
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+      flexWrap: "wrap",
+    },
   },
   cardAction: {
-    width: 100,
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: 100,
+      alignItems: "center",
+      justifyContent: "center",
+    },
   },
   image: {
-    width: 250,
-    height: 200,
+    paddingTop: "56.25%", // 16:9
+    height: 0,
+    [theme.breakpoints.up("md")]: {
+      width: 250,
+      height: 150,
+      paddingTop: 0,
+    },
   },
   content: {
     flex: 1,
@@ -34,7 +50,7 @@ const useStyles = makeStyles({
     opacity: 0.5,
     pointerEvents: "none",
   },
-});
+}));
 
 const FavoriteItem: React.FC<Props> = ({ project, onRemove, removing }) => {
   const classes = useStyles();

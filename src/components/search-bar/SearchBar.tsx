@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "relative",
       borderRadius: 50,
       backgroundColor: theme.palette.grey[200],
-      marginRight: theme.spacing(2),
       marginLeft: 0,
       width: "auto",
     },
@@ -36,9 +35,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   onSubmit(value: string): void;
+  className?: string;
 }
 
-const SearchBar: React.FC<Props> = ({ onSubmit }) => {
+const SearchBar: React.FC<Props> = ({ onSubmit, className = "" }) => {
   const [searchText, setSearchText] = useState("");
   const classes = useStyles();
 
@@ -48,7 +48,7 @@ const SearchBar: React.FC<Props> = ({ onSubmit }) => {
   };
 
   return (
-    <form className={classes.search} onSubmit={handleSubmit}>
+    <form className={`${classes.search} ${className}`} onSubmit={handleSubmit}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>

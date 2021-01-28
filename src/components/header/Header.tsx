@@ -1,16 +1,11 @@
-import React from "react";
+import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { Link, useHistory } from "react-router-dom";
-import { useModal, useAuth } from "contexts";
 import SearchBar from "components/search-bar";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Avatar from "@material-ui/core/Avatar";
-import AddIcon from "@material-ui/icons/Add";
+import UserNav from "../user-nav/UserNav";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,23 +25,23 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: theme.palette.primary.main,
   },
-  headerLink: {
-    marginRight: 20,
+  searchDesktopContainer: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "block",
+    },
   },
-  avatarBackgroundColor: {
-    backgroundColor: theme.palette.primary.main,
-    cursor: "pointer",
-  },
-  avatarButtonContainer: {
-    backgroundColor: "transparent",
-    border: "transparent",
-  },
-  list: {
+  searchMobileContainer: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
   },
-  item: {
-    marginRight: 10,
+  searchBarForm: {
+    width: "100%",
   },
 }));
 
@@ -54,131 +49,39 @@ export default function Header() {
   const classes = useStyles();
   const history = useHistory();
 
-  const { openModal } = useModal();
-  const { currentUser, logout } = useAuth();
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleOpenDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseDropDown = () => {
-    setAnchorEl(null);
-  };
+  const [isOpenMobileSearchBar, setIsOpenMobileSearchBar] = useState(false);
 
   const handleSubmit = (value: string) => {
     const url = `/projects?search=${value}`;
     history.push(url);
   };
 
-  const handleNavigateDropDownMenu = (value: string) => {
-    handleCloseDropDown();
-    switch (value) {
-      case "logout":
-        logout();
-        break;
-      case "settings":
-        history.push("/settings");
-        break;
-      case "profile":
-        history.push(`/user/${currentUser?.id}`);
-        break;
-      case "favorites":
-        history.push("/favorites");
-        break;
-    }
+  const handleToggleSearchBar = () => {
+    setIsOpenMobileSearchBar(!isOpenMobileSearchBar);
   };
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.header}>
+      <AppBar position="relative" className={classes.header}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.siteTitle}>
               ProjectHub
             </Link>
           </Typography>
-          <SearchBar onSubmit={handleSubmit} />
-          <ul className={classes.list}>
-            {currentUser ? (
-              <>
-                <li className={classes.item}>
-                  <Button
-                    color="primary"
-                    disableElevation
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    component={Link}
-                    to="/create"
-                  >
-                    Project
-                  </Button>
-                </li>
-                <li className={classes.item}>
-                  <button
-                    type="button"
-                    onClick={handleOpenDropdown}
-                    className={classes.avatarButtonContainer}
-                  >
-                    <Avatar className={classes.avatarBackgroundColor}>
-                      {currentUser.name?.charAt(0).toUpperCase()}
-                    </Avatar>
-                  </button>
-                  <Menu
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseDropDown}
-                  >
-                    <MenuItem
-                      onClick={() => handleNavigateDropDownMenu("profile")}
-                    >
-                      My Profile
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => handleNavigateDropDownMenu("favorites")}
-                    >
-                      My Favorites
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => handleNavigateDropDownMenu("settings")}
-                    >
-                      My Settings
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => handleNavigateDropDownMenu("logout")}
-                    >
-                      <Button color="primary">Log Out</Button>
-                    </MenuItem>
-                  </Menu>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className={classes.item}>
-                  <Button
-                    color="primary"
-                    className={classes.headerLink}
-                    onClick={() => openModal("LOGIN_VIEW")}
-                  >
-                    Log In
-                  </Button>
-                </li>
-                <li className={classes.item}>
-                  <Button
-                    color="primary"
-                    disableElevation
-                    variant="contained"
-                    onClick={() => openModal("SIGN_UP_VIEW")}
-                  >
-                    Sign Up
-                  </Button>
-                </li>
-              </>
-            )}
-          </ul>
+          <div className={classes.searchDesktopContainer}>
+            <SearchBar onSubmit={handleSubmit} />
+          </div>
+          <UserNav toggleSearchBar={handleToggleSearchBar} />
         </Toolbar>
+        {isOpenMobileSearchBar && (
+          <div className={classes.searchMobileContainer}>
+            <SearchBar
+              onSubmit={handleSubmit}
+              className={classes.searchBarForm}
+            />
+          </div>
+        )}
       </AppBar>
     </div>
   );

@@ -10,7 +10,7 @@ import { useModal, useAuth } from "contexts";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    width: 600,
+    width: "auto",
   },
   input: {
     display: "block",

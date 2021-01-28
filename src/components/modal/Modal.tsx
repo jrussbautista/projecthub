@@ -22,7 +22,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     borderRadius: 6,
-    minWidth: 400,
+    width: "90%",
+    [theme.breakpoints.up("md")]: {
+      width: 600,
+    },
   },
   closeContainer: {
     display: "flex",

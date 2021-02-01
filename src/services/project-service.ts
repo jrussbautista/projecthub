@@ -1,10 +1,10 @@
-import { auth, db, timestamp } from "lib/firebase";
+import {   auth, db, timestamp } from "lib/firebase";
 import { AddProject, Project } from "types/Project";
 import { FirebaseStorage } from "lib/firebase-storage";
 import { PROJECTS_COLLECTION, FAVORITES_COLLECTION } from "./service-constants";
 
 const RELATED_PROJECTS_LIMIT = 4;
-const PROJECTS_LIMIT = 20;
+const PROJECTS_LIMIT = 1;
 
 const addProject = async ({
   title,
@@ -47,7 +47,7 @@ const getProjects = async ({
   labels = [],
 }: {
   labels?: string[];
-} = {}): Promise<Project[]> => {
+} = {}) => {
   let query;
 
   query = db.collection(PROJECTS_COLLECTION);
@@ -56,15 +56,49 @@ const getProjects = async ({
     query = query.where("labels", "array-contains-any", labels);
   }
 
-  const getProjects = await query.limit(PROJECTS_LIMIT).get();
+  const getProjects = await query.orderBy('created_at', 'desc').limit(PROJECTS_LIMIT).get();
+  const lastItemVisible = getProjects.docs[getProjects.docs.length - 1];
 
-  return getProjects.docs.map((project) => {
+  const data = getProjects.docs.map((project) => {
     return {
       ...(project.data() as Project),
       id: project.id,
     };
   });
+
+  return {
+    data,
+    lastItemVisible
+  }
 };
+
+const loadMoreProjects = async (lastVisible: Object) => {
+
+  let query;
+
+  query = db.collection(PROJECTS_COLLECTION);
+
+
+  const getProjects = await query.limit(PROJECTS_LIMIT)
+  .orderBy("created_at", "desc")
+  .startAfter(lastVisible).get()
+
+  if(getProjects.docs.length === 0) return null;
+
+  const data = getProjects.docs.map((project) => {
+    return {
+      ...(project.data() as Project),
+      id: project.id,
+    };
+  });
+
+  const lastItemVisible = getProjects.docs[getProjects.docs.length - 1];
+
+  return {
+    data,
+    lastItemVisible
+  }
+}
 
 export const getProject = async (projectId: string): Promise<Project> => {
   const currentUser = auth.currentUser;
@@ -118,4 +152,5 @@ export const ProjectService = {
   getProjects,
   getProject,
   getRelatedProjects,
+  loadMoreProjects
 };

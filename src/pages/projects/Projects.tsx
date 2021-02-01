@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Container, Typography, makeStyles } from "@material-ui/core";
+import { Container, Typography, makeStyles, Button } from "@material-ui/core";
 import ProjectList from "components/project/ProjectList";
 import { Status } from "types/Status";
 import { Project } from "types/Project";
@@ -10,6 +10,7 @@ import Alert from "@material-ui/lab/Alert";
 import queryString from "query-string";
 import ProjectsLabel from "./ProjectsLabel";
 import useLabels from "hooks/use-labels";
+
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -27,12 +28,21 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     marginTop: 30,
   },
+  loadMoreContainer: {
+    textAlign: 'center',
+    marginTop: 30
+  }
 }));
 
 const Projects = () => {
   const [projectStatus, setProjectStatus] = useState<Status>("idle");
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const [lastItemVisible, setLastItemVisible] = useState<Object | null>(null);
+  const [isViewingMore, setIsViewingMore] = useState(false);
+  const [hasViewMore, setHasViewMore] = useState(true);
+
+
 
   const { labels, status: labelsStatus } = useLabels();
   const location = useLocation();
@@ -46,7 +56,8 @@ const Projects = () => {
         const results = await ProjectService.getProjects({
           labels: selectedLabels,
         });
-        setProjects(results);
+        setLastItemVisible(results.lastItemVisible)
+        setProjects(results.data);
         setProjectStatus("success");
       } catch (error) {
         setProjectStatus("error");
@@ -69,6 +80,26 @@ const Projects = () => {
     }
   };
 
+
+  const handleViewMore = async () => {
+    try {
+      if (!lastItemVisible) {
+        return setHasViewMore(false);
+      };
+      setIsViewingMore(true);
+      const results = await ProjectService.loadMoreProjects(lastItemVisible);
+      if (!results) {
+        return setHasViewMore(false);
+      };
+      setProjects([...projects, ...results.data]);
+      setLastItemVisible(results.lastItemVisible)
+    } catch (error) {
+      alert('Unable to view more projects. Please try again later.');
+    } finally {
+      setIsViewingMore(false);
+    }
+  }
+
   const renderProjectsSection = () => {
     if (projectStatus === "idle") {
       return (
@@ -80,7 +111,7 @@ const Projects = () => {
     if (projectStatus === "error") {
       return (
         <Alert severity="error">
-          Unable to get project details right now. Please try again later.
+          Unable to get projects right now. Please try again later.
         </Alert>
       );
     }
@@ -91,7 +122,25 @@ const Projects = () => {
         </Typography>
       );
     }
-    return <ProjectList projects={projects} />;
+    return (
+      <>
+        <ProjectList projects={projects} />
+          <div className={classes.loadMoreContainer}>
+            {hasViewMore ?
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              onClick={handleViewMore}
+              disabled={isViewingMore}>
+              {isViewingMore ? <CircularProgress size={30} /> : 'View More'}
+            </Button>
+            :
+            <Typography color="error"> You reached the end. </Typography>
+            }
+          </div>
+      </>
+    );
   };
 
   return (

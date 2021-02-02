@@ -11,7 +11,6 @@ import queryString from "query-string";
 import ProjectsLabel from "./ProjectsLabel";
 import useLabels from "hooks/use-labels";
 
-
 const useStyles = makeStyles(() => ({
   container: {
     marginTop: 30,
@@ -29,9 +28,9 @@ const useStyles = makeStyles(() => ({
     marginTop: 30,
   },
   loadMoreContainer: {
-    textAlign: 'center',
-    marginTop: 30
-  }
+    textAlign: "center",
+    marginTop: 30,
+  },
 }));
 
 const Projects = () => {
@@ -41,8 +40,6 @@ const Projects = () => {
   const [lastItemVisible, setLastItemVisible] = useState<Object | null>(null);
   const [isViewingMore, setIsViewingMore] = useState(false);
   const [hasViewMore, setHasViewMore] = useState(true);
-
-
 
   const { labels, status: labelsStatus } = useLabels();
   const location = useLocation();
@@ -55,16 +52,21 @@ const Projects = () => {
         setProjectStatus("idle");
         const results = await ProjectService.getProjects({
           labels: selectedLabels,
+          search: searchText as string,
+          lastVisible: lastItemVisible,
         });
-        setLastItemVisible(results.lastItemVisible)
-        setProjects(results.data);
+        if (results) {
+          setLastItemVisible(results.lastItemVisible);
+          setProjects(results.data);
+          setHasViewMore(results.data.length > 20);
+        }
         setProjectStatus("success");
       } catch (error) {
         setProjectStatus("error");
       }
     };
     fetchProjects();
-  }, [selectedLabels]);
+  }, [selectedLabels, searchText]);
 
   const handleSelectLabel = (selectedLabel: string) => {
     const isAlreadySelected = selectedLabels.some(
@@ -80,25 +82,28 @@ const Projects = () => {
     }
   };
 
-
   const handleViewMore = async () => {
     try {
       if (!lastItemVisible) {
         return setHasViewMore(false);
-      };
+      }
       setIsViewingMore(true);
-      const results = await ProjectService.loadMoreProjects(lastItemVisible);
+      const results = await ProjectService.getProjects({
+        labels: selectedLabels,
+        lastVisible: lastItemVisible,
+        search: searchText as string,
+      });
       if (!results) {
         return setHasViewMore(false);
-      };
+      }
       setProjects([...projects, ...results.data]);
-      setLastItemVisible(results.lastItemVisible)
+      setLastItemVisible(results.lastItemVisible);
     } catch (error) {
-      alert('Unable to view more projects. Please try again later.');
+      alert("Unable to view more projects. Please try again later.");
     } finally {
       setIsViewingMore(false);
     }
-  }
+  };
 
   const renderProjectsSection = () => {
     if (projectStatus === "idle") {
@@ -122,23 +127,25 @@ const Projects = () => {
         </Typography>
       );
     }
+
     return (
       <>
         <ProjectList projects={projects} />
-          <div className={classes.loadMoreContainer}>
-            {hasViewMore ?
+        <div className={classes.loadMoreContainer}>
+          {hasViewMore ? (
             <Button
               type="button"
               variant="contained"
               color="primary"
               onClick={handleViewMore}
-              disabled={isViewingMore}>
-              {isViewingMore ? <CircularProgress size={30} /> : 'View More'}
+              disabled={isViewingMore}
+            >
+              {isViewingMore ? <CircularProgress size={30} /> : "View More"}
             </Button>
-            :
+          ) : (
             <Typography color="error"> You reached the end. </Typography>
-            }
-          </div>
+          )}
+        </div>
       </>
     );
   };

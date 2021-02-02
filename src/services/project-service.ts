@@ -1,10 +1,10 @@
-import {   auth, db, timestamp } from "lib/firebase";
+import { auth, db, timestamp } from "lib/firebase";
 import { AddProject, Project } from "types/Project";
 import { FirebaseStorage } from "lib/firebase-storage";
 import { PROJECTS_COLLECTION, FAVORITES_COLLECTION } from "./service-constants";
 
 const RELATED_PROJECTS_LIMIT = 4;
-const PROJECTS_LIMIT = 1;
+const PROJECTS_LIMIT = 20;
 
 const addProject = async ({
   title,
@@ -45,10 +45,15 @@ const addProject = async ({
 
 const getProjects = async ({
   labels = [],
+  search = "",
+  lastVisible = null,
 }: {
   labels?: string[];
-} = {}) => {
+  search?: string;
+  lastVisible?: Object | null;
+}) => {
   let query;
+  let orderBy = "created_at";
 
   query = db.collection(PROJECTS_COLLECTION);
 
@@ -56,7 +61,24 @@ const getProjects = async ({
     query = query.where("labels", "array-contains-any", labels);
   }
 
-  const getProjects = await query.orderBy('created_at', 'desc').limit(PROJECTS_LIMIT).get();
+  if (search) {
+    orderBy = "title";
+    query = query
+      .orderBy(orderBy)
+      .startAt(search)
+      .endAt(search + "~");
+  } else {
+    query = query.orderBy(orderBy);
+  }
+
+  if (lastVisible) {
+    query = query.startAfter(lastVisible);
+  }
+
+  const getProjects = await query.limit(PROJECTS_LIMIT).get();
+
+  if (getProjects.docs.length === 0) return null;
+
   const lastItemVisible = getProjects.docs[getProjects.docs.length - 1];
 
   const data = getProjects.docs.map((project) => {
@@ -68,37 +90,9 @@ const getProjects = async ({
 
   return {
     data,
-    lastItemVisible
-  }
+    lastItemVisible,
+  };
 };
-
-const loadMoreProjects = async (lastVisible: Object) => {
-
-  let query;
-
-  query = db.collection(PROJECTS_COLLECTION);
-
-
-  const getProjects = await query.limit(PROJECTS_LIMIT)
-  .orderBy("created_at", "desc")
-  .startAfter(lastVisible).get()
-
-  if(getProjects.docs.length === 0) return null;
-
-  const data = getProjects.docs.map((project) => {
-    return {
-      ...(project.data() as Project),
-      id: project.id,
-    };
-  });
-
-  const lastItemVisible = getProjects.docs[getProjects.docs.length - 1];
-
-  return {
-    data,
-    lastItemVisible
-  }
-}
 
 export const getProject = async (projectId: string): Promise<Project> => {
   const currentUser = auth.currentUser;
@@ -152,5 +146,4 @@ export const ProjectService = {
   getProjects,
   getProject,
   getRelatedProjects,
-  loadMoreProjects
 };

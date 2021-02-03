@@ -58,10 +58,11 @@ const Projects = () => {
         if (results) {
           setLastItemVisible(results.lastItemVisible);
           setProjects(results.data);
-          setHasViewMore(results.data.length > 20);
+          setHasViewMore(results.data.length >= 20);
         }
         setProjectStatus("success");
       } catch (error) {
+        console.log(error);
         setProjectStatus("error");
       }
     };

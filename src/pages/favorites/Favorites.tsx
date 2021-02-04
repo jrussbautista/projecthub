@@ -7,6 +7,7 @@ import Alert from "@material-ui/lab/Alert";
 import { Project } from "types/Project";
 import FavoriteItem from "./FavoriteItem";
 import emptyImage from "assets/images/empty.svg";
+import { useNotification } from "contexts";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -40,7 +41,8 @@ const Favorites = () => {
   const [status, setStatus] = useState("idle");
   const [favorites, setFavorites] = useState<Project[]>([]);
   const [removingId, setRemovingId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -58,15 +60,16 @@ const Favorites = () => {
 
   const handleRemove = async (id: string) => {
     try {
-      setError(null);
       setRemovingId(id);
       await FavoriteService.toggleFavorite(id);
       const filterFavorites = favorites.filter(
         (favorite) => favorite.id !== id
       );
       setFavorites(filterFavorites);
+      showNotification("success", "Removed to favorites.");
     } catch (error) {
-      setError(
+      showNotification(
+        "error",
         "Unable to remove your favorite right now. Please try again later."
       );
       setRemovingId(null);
@@ -98,12 +101,6 @@ const Favorites = () => {
       <Typography variant="h6" className={classes.heading}>
         My Favorites
       </Typography>
-
-      {error && (
-        <Alert severity="error" className={classes.errorContainer}>
-          {error}
-        </Alert>
-      )}
 
       {favorites.length > 0 ? (
         favorites.map((favorite) => (

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ProjectService } from "services/project-service";
 import { FavoriteService } from "services/favorites-service";
 import { Project } from "types/Project";
-import { useAuth, useModal } from "contexts";
+import { useAuth, useModal, useNotification } from "contexts";
 import { Status } from "types/Status";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -69,6 +69,7 @@ const ProjectView = () => {
 
   const { isAuthenticated } = useAuth();
   const { openModal } = useModal();
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -108,8 +109,20 @@ const ProjectView = () => {
       return openModal("LOGIN_VIEW");
     }
     if (!project) return;
-    setIsFavorite(!isFavorite);
-    await FavoriteService.toggleFavorite(id);
+
+    try {
+      setIsFavorite(!isFavorite);
+      await FavoriteService.toggleFavorite(id);
+      const favoriteMessage = isFavorite
+        ? "Removed to favorites!"
+        : "Added to favorites";
+      showNotification("success", favoriteMessage);
+    } catch (error) {
+      showNotification(
+        "error",
+        "Unable to toggle favorite right now. Please try again later."
+      );
+    }
   };
 
   if (projectStatus === "idle") {

@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "styles/global.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ModalProvider, AuthProvider } from "contexts";
+import { ModalProvider, AuthProvider, NotificationProvider } from "contexts";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core";
 import { ScrollToTop } from "routing";
 import ModalManager from "components/modal-manager";
+import NotificationContainer from "components/notification-container";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-
 import theme from "theme";
 
 ReactDOM.render(
@@ -18,12 +18,15 @@ ReactDOM.render(
       <ScrollToTop />
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AuthProvider>
-          <ModalProvider>
-            <ModalManager />
-            <App />
-          </ModalProvider>
-        </AuthProvider>
+        <NotificationProvider>
+          <NotificationContainer />
+          <AuthProvider>
+            <ModalProvider>
+              <ModalManager />
+              <App />
+            </ModalProvider>
+          </AuthProvider>
+        </NotificationProvider>
       </ThemeProvider>
     </Router>
   </React.StrictMode>,

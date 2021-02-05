@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   header: {
-    backgroundColor: "#fff",
-    color: "#3d3d3d",
+    backgroundColor: "inherit",
+    color: theme.palette.grey[900],
   },
   menuButton: {
     marginRight: theme.spacing(2),

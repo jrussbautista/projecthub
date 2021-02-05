@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Typography } from "@material-ui/core";
-import { useAuth } from "contexts";
+import { useAuth, useTheme } from "contexts";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -9,6 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
+import Switch from "@material-ui/core/Switch";
 import ChangePassword from "./ChangePassword";
 import EditProfile from "./EditProfile";
 import Meta from "components/meta";
@@ -58,6 +59,7 @@ const Settings = () => {
   const classes = useStyles();
 
   const { currentUser } = useAuth();
+  const { isDarkMode, toggle } = useTheme();
 
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
 
@@ -82,6 +84,16 @@ const Settings = () => {
       <Typography variant="h5"> My Settings</Typography>
       {currentUser && (
         <List component="nav">
+          <ListItem button>
+            <ListItemText primary="Dark Mode" />
+            <Switch
+              checked={isDarkMode}
+              onChange={toggle}
+              color="primary"
+              inputProps={{ "aria-label": "toggle checkbox" }}
+            />
+          </ListItem>
+          <Divider />
           {MENUS.map((menu) => (
             <div key={menu.id}>
               <ListItem button onClick={() => handleClick(menu.id)}>

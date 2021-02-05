@@ -3,7 +3,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { useNotification } from "contexts";
 
-const Notification = () => {
+const NotificationContainer = () => {
   const { visible, message, type, closeNotification } = useNotification();
 
   return (
@@ -20,4 +20,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default NotificationContainer;

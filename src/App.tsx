@@ -3,6 +3,8 @@ import Layout from "components/layout";
 import { AppRoutes } from "routing";
 import { useAuth } from "contexts";
 import AppSkeleton from "components/app-skeleton";
+import NotificationContainer from "components/notification-container";
+import ModalManager from "components/modal-manager";
 
 function App() {
   const { isLoading } = useAuth();
@@ -12,9 +14,13 @@ function App() {
   }
 
   return (
-    <Layout>
-      <AppRoutes />
-    </Layout>
+    <>
+      <NotificationContainer />
+      <ModalManager />
+      <Layout>
+        <AppRoutes />
+      </Layout>
+    </>
   );
 }
 

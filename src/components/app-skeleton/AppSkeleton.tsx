@@ -6,8 +6,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor: "#fff",
-    color: "#3d3d3d",
+    backgroundColor: "inherit",
   },
   menuButton: {
     marginRight: theme.spacing(2),

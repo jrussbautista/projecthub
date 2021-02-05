@@ -10,6 +10,7 @@ import { HomeData } from "types/HomeData";
 import { HomeService } from "services/home-service";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import Meta from "components/meta";
 
 const useStyles = makeStyles(() => ({
   loadMoreContainer: {
@@ -67,6 +68,7 @@ const Home = () => {
 
   return (
     <>
+      <Meta title="Home" />
       <Hero
         heading="Discover The Best New Dev Projects"
         description="ProjectHub is a community of developers to share & 

@@ -11,6 +11,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
 import ChangePassword from "./ChangePassword";
 import EditProfile from "./EditProfile";
+import Meta from "components/meta";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -77,6 +78,7 @@ const Settings = () => {
 
   return (
     <Container className={classes.container}>
+      <Meta title="Settings" />
       <Typography variant="h5"> My Settings</Typography>
       {currentUser && (
         <List component="nav">

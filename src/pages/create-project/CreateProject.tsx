@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import useLabels from "hooks/use-labels";
+import Meta from "components/meta";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -120,6 +121,7 @@ const CreateProject = () => {
 
   return (
     <Container>
+      <Meta title="Create Project" />
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={success}

@@ -10,6 +10,7 @@ import { Status } from "types/Status";
 import { Project } from "types/Project";
 import UserProjects from "./UserProjects";
 import UserDetails from "./UserDetails";
+import Meta from "components/meta";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -100,6 +101,7 @@ const UserPage = () => {
 
   return (
     <Container className={classes.container}>
+      <Meta title={user.name} />
       <UserDetails user={user} />
       {renderUserProjectsSection()}
     </Container>

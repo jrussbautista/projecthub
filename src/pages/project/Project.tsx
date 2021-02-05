@@ -16,6 +16,7 @@ import Alert from "@material-ui/lab/Alert";
 import UserDetails from "./UserDetails";
 import RelatedProjects from "./RelatedProjects";
 import { makeStyles } from "@material-ui/core/styles";
+import Meta from "components/meta";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -168,6 +169,7 @@ const ProjectView = () => {
 
   return (
     <Container className={classes.container}>
+      <Meta title={project.title} />
       <Card>
         <div className={classes.cardImgContainer}>
           <CardMedia

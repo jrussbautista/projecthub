@@ -8,6 +8,7 @@ import { Project } from "types/Project";
 import FavoriteItem from "./FavoriteItem";
 import emptyImage from "assets/images/empty.svg";
 import { useNotification } from "contexts";
+import Meta from "components/meta";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -98,10 +99,10 @@ const Favorites = () => {
 
   return (
     <Container className={classes.container}>
+      <Meta title="Favorites" />
       <Typography variant="h6" className={classes.heading}>
         My Favorites
       </Typography>
-
       {favorites.length > 0 ? (
         favorites.map((favorite) => (
           <FavoriteItem

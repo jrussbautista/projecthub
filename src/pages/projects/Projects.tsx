@@ -10,6 +10,7 @@ import Alert from "@material-ui/lab/Alert";
 import queryString from "query-string";
 import ProjectsLabel from "./ProjectsLabel";
 import useLabels from "hooks/use-labels";
+import Meta from "components/meta";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -131,6 +132,7 @@ const Projects = () => {
 
     return (
       <>
+        <Meta title="Projects" />
         <ProjectList projects={projects} />
         <div className={classes.loadMoreContainer}>
           {hasViewMore ? (

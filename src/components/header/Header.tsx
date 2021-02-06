@@ -8,22 +8,34 @@ import SearchBar from "components/search-bar";
 import UserNav from "components/user-nav";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   header: {
     backgroundColor: "inherit",
     color: theme.palette.grey[900],
   },
+  headerLogoContainer: {
+    display: "flex",
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    flexGrow: 1,
+  logoWrapper: {
+    display: "flex",
+    alignItems: "center",
   },
-  siteTitle: {
+  headerRight: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  headerTitle: {
+    display: "none",
     textDecoration: "none",
     color: theme.palette.primary.main,
+    paddingLeft: 10,
+    [theme.breakpoints.up("md")]: {
+      display: "block",
+    },
   },
   searchDesktopContainer: {
     display: "none",
@@ -61,28 +73,29 @@ export default function Header() {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="relative" className={classes.header}>
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            <Link to="/" className={classes.siteTitle}>
-              ProjectHub
-            </Link>
+    <AppBar position="relative" className={classes.header}>
+      <Toolbar>
+        <Link to="/" className={classes.logoWrapper}>
+          <img src={process.env.PUBLIC_URL + "/logo.png"} alt="ProjectHub" />
+          <Typography variant="h6" className={classes.headerTitle}>
+            <span>ProjectHub</span>
           </Typography>
+        </Link>
+        <div className={classes.headerRight}>
           <div className={classes.searchDesktopContainer}>
             <SearchBar onSubmit={handleSubmit} />
           </div>
           <UserNav toggleSearchBar={handleToggleSearchBar} />
-        </Toolbar>
-        {isOpenMobileSearchBar && (
-          <div className={classes.searchMobileContainer}>
-            <SearchBar
-              onSubmit={handleSubmit}
-              className={classes.searchBarForm}
-            />
-          </div>
-        )}
-      </AppBar>
-    </div>
+        </div>
+      </Toolbar>
+      {isOpenMobileSearchBar && (
+        <div className={classes.searchMobileContainer}>
+          <SearchBar
+            onSubmit={handleSubmit}
+            className={classes.searchBarForm}
+          />
+        </div>
+      )}
+    </AppBar>
   );
 }

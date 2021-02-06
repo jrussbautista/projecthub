@@ -5,19 +5,18 @@ import {
 } from "@material-ui/core";
 
 const ThemeContext = createContext({
-  isDarkMode: false,
+  theme: "light",
   toggle: () => {},
 });
 
 export const ThemeProvider: React.FC = ({ children }) => {
-  const initialValue = Boolean(localStorage.getItem("darkMode")) || false;
-  const [isDarkMode, setIsDarkMode] = useState(initialValue);
+  const initialValue =
+    localStorage.getItem("theme") === "dark" ? "dark" : "light";
+  const [theme, setTheme] = useState(initialValue);
 
-  const type = isDarkMode ? "dark" : "light";
+  const type = theme === "dark" ? "dark" : "light";
 
-  console.log(type);
-
-  const theme = createMuiTheme({
+  const materialTheme = createMuiTheme({
     palette: {
       type,
       primary: {
@@ -27,16 +26,17 @@ export const ThemeProvider: React.FC = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
-  }, [isDarkMode]);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const toggle = () => {
-    setIsDarkMode(!isDarkMode);
+    const selectedTheme = theme === "dark" ? "light" : "dark";
+    setTheme(selectedTheme);
   };
 
   return (
-    <MaterialThemeProvider theme={theme}>
-      <ThemeContext.Provider value={{ isDarkMode, toggle }}>
+    <MaterialThemeProvider theme={materialTheme}>
+      <ThemeContext.Provider value={{ theme, toggle }}>
         {children}
       </ThemeContext.Provider>
     </MaterialThemeProvider>

@@ -59,7 +59,7 @@ const Settings = () => {
   const classes = useStyles();
 
   const { currentUser } = useAuth();
-  const { isDarkMode, toggle } = useTheme();
+  const { theme, toggle } = useTheme();
 
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
 
@@ -87,7 +87,7 @@ const Settings = () => {
           <ListItem button>
             <ListItemText primary="Dark Mode" />
             <Switch
-              checked={isDarkMode}
+              checked={theme === "dark"}
               onChange={toggle}
               color="primary"
               inputProps={{ "aria-label": "toggle checkbox" }}

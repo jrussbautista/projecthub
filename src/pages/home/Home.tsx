@@ -9,8 +9,9 @@ import Hero from "components/hero";
 import { HomeData } from "types/HomeData";
 import { HomeService } from "services/home-service";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import Meta from "components/meta";
+import Alert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
   loadMoreContainer: {
@@ -53,7 +54,6 @@ const Home = () => {
         setError(error.message);
       } finally {
         setLoading(false);
-        setError(null);
       }
     };
     fetchHomeData();
@@ -87,8 +87,12 @@ const Home = () => {
         </Button>
       </Hero>
       <Container>
-        {error && <p> Something went wrong. Please try again later. </p>}
-        {loading ? (
+        {error && (
+          <Alert severity="error">
+            Something went wrong. Please try again later.
+          </Alert>
+        )}
+        {loading || error ? (
           <div className={classes.loadingContainer}>
             <CircularProgress />
           </div>

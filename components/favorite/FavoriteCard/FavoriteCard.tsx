@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useAuth, useFavorites, useModal, useNotification } from "contexts";
 import { Project } from "interfaces/Project";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -11,8 +13,6 @@ import Link from "next/link";
 
 interface Props {
   project: Project;
-  onRemove(id: string): void;
-  removing: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -52,8 +52,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FavoriteCard: React.FC<Props> = ({ project, onRemove, removing }) => {
+const FavoriteCard: React.FC<Props> = ({ project }) => {
   const classes = useStyles();
+
+  const [removing, setRemoving] = useState(false);
+
+  const { toggleFavorite } = useFavorites();
+  const { openModal } = useModal();
+  const { currentUser } = useAuth();
+  const { showNotification } = useNotification();
+
+  const handleToggleFavorite = async () => {
+    if (!currentUser) {
+      return openModal("LOGIN_VIEW");
+    }
+
+    try {
+      setRemoving(true);
+      await toggleFavorite(project);
+      showNotification("success", "Removed to favorites!");
+    } catch (error) {
+      showNotification(
+        "error",
+        "Unable to toggle favorite right now. Please try again later."
+      );
+    }
+  };
 
   return (
     <Card className={`${classes.card} ${removing ? classes.removing : ""}`}>
@@ -81,7 +105,7 @@ const FavoriteCard: React.FC<Props> = ({ project, onRemove, removing }) => {
       <CardActions disableSpacing className={classes.cardAction}>
         <IconButton
           aria-label="Remove to favorites"
-          onClick={() => onRemove(project.id)}
+          onClick={handleToggleFavorite}
         >
           <DeleteIcon />
         </IconButton>

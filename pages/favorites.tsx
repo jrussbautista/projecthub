@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
 import { Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { FavoriteService } from "services/favorite-service";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
-import { Project } from "interfaces/Project";
-import FavoriteItem from "components/favorite/FavoriteCard";
+import FavoriteCard from "components/favorite/FavoriteCard";
 import Image from "next/image";
-import { useNotification, useAuth } from "contexts";
+import { useFavorites } from "contexts";
 import Meta from "components/meta";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,47 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Favorites = () => {
   const classes = useStyles();
-
-  const [status, setStatus] = useState("idle");
-  const [favorites, setFavorites] = useState<Project[]>([]);
-  const [removingId, setRemovingId] = useState<string | null>(null);
-  const { showNotification } = useNotification();
-  const { currentUser } = useAuth();
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        setStatus("idle");
-        const results = await FavoriteService.getFavorites();
-        setFavorites(results);
-        setStatus("success");
-      } catch (error) {
-        console.log(error);
-        setStatus("error");
-      }
-    };
-    if (currentUser) {
-      fetchFavorites();
-    }
-  }, [currentUser]);
-
-  const handleRemove = async (id: string) => {
-    try {
-      setRemovingId(id);
-      await FavoriteService.toggleFavorite(id);
-      const filterFavorites = favorites.filter(
-        (favorite) => favorite.id !== id
-      );
-      setFavorites(filterFavorites);
-      showNotification("success", "Removed to favorites.");
-    } catch (error) {
-      showNotification(
-        "error",
-        "Unable to remove your favorite right now. Please try again later."
-      );
-      setRemovingId(null);
-    }
-  };
+  const { favorites, status } = useFavorites();
 
   if (status === "idle") {
     return (
@@ -108,12 +65,7 @@ const Favorites = () => {
       </Typography>
       {favorites.length > 0 ? (
         favorites.map((favorite) => (
-          <FavoriteItem
-            key={favorite.id}
-            project={favorite}
-            onRemove={handleRemove}
-            removing={removingId === favorite.id}
-          />
+          <FavoriteCard key={favorite.id} project={favorite} />
         ))
       ) : (
         <div className={classes.emptyContainer}>

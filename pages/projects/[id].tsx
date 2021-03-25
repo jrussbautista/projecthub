@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { ProjectService } from "services/project-service";
-import { FavoriteService } from "services/favorite-service";
 import { Project } from "interfaces/Project";
-import { useAuth, useModal, useNotification } from "contexts";
 import { Status } from "interfaces/Status";
 import { makeStyles } from "@material-ui/core/styles";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
@@ -73,29 +70,10 @@ const ProjectPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const classes = useStyles();
 
-  const { query } = useRouter();
-
-  const { id } = query;
-
   const [relatedProjectsStatus, setRelatedProjectsStatus] = useState<Status>(
     "idle"
   );
   const [relatedProjects, setRelatedProjects] = useState<Project[]>([]);
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const { isAuthenticated } = useAuth();
-  const { openModal } = useModal();
-  const { showNotification } = useNotification();
-
-  useEffect(() => {
-    const checkIfAlreadyFavorite = async () => {
-      const res = await FavoriteService.checkFavorite(id as string);
-      setIsFavorite(res);
-    };
-    if (isAuthenticated) {
-      checkIfAlreadyFavorite();
-    }
-  }, [isAuthenticated]);
 
   useEffect(() => {
     const fetchRelatedProjects = async (category: string) => {
@@ -113,27 +91,6 @@ const ProjectPage = ({
       fetchRelatedProjects(project.category);
     }
   }, [project]);
-
-  const handleToggleFavorite = async () => {
-    if (!isAuthenticated) {
-      return openModal("LOGIN_VIEW");
-    }
-    if (!project) return;
-
-    try {
-      setIsFavorite(!isFavorite);
-      await FavoriteService.toggleFavorite(id as string);
-      const favoriteMessage = isFavorite
-        ? "Removed to favorites!"
-        : "Added to favorites";
-      showNotification("success", favoriteMessage);
-    } catch (error) {
-      showNotification(
-        "error",
-        "Unable to toggle favorite right now. Please try again later."
-      );
-    }
-  };
 
   return (
     <Container className={classes.container}>
@@ -204,10 +161,7 @@ const ProjectPage = ({
             )}
           </div>
           <div>
-            <FavoriteButton
-              isFavorite={isFavorite}
-              onClick={handleToggleFavorite}
-            />
+            <FavoriteButton project={project} />
           </div>
         </div>
       </Card>

@@ -21,7 +21,9 @@ const getUserProjects = async (userId: string): Promise<Project[]> => {
   const projectsRef = db
     .collection(PROJECTS_COLLECTION)
     .where("user.id", "==", userId);
-  const getProjectsRef = await projectsRef.get();
+  const getProjectsRef = await projectsRef
+    .where("status", "==", "active")
+    .get();
 
   return getProjectsRef.docs.map((project) => {
     const projectDetails = postToJSON(project);

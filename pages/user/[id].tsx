@@ -1,11 +1,16 @@
+import { useState } from "react";
 import { Container } from "@material-ui/core";
+import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserService } from "services/user-service";
+import { Project } from "interfaces/Project";
 import Typography from "@material-ui/core/Typography";
-import { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import ProjectList from "components/project/ProjectList";
+import Grid from "@material-ui/core/Grid";
+import ProjectCard from "components/project/ProjectCard";
 import UserDetails from "components/user/UserDetails";
 import Meta from "components/meta";
+import { useAuth } from "contexts";
+import { ProjectService } from "services/project-service";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -23,9 +28,19 @@ const useStyles = makeStyles((theme) => ({
 
 const UserPage = ({
   user,
-  projects,
+  projects: initialProjects,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const classes = useStyles();
+
+  const [projects, setProjects] = useState<Project[]>(initialProjects ?? []);
+
+  const { currentUser } = useAuth();
+
+  const handleDeleteProject = async (id: string) => {
+    await ProjectService.deleteProject(id);
+    const filterProjects = projects.filter((project) => project.id !== id);
+    setProjects(filterProjects);
+  };
 
   return (
     <Container className={classes.container}>
@@ -35,7 +50,19 @@ const UserPage = ({
         Projects
       </Typography>
       {projects.length > 0 ? (
-        <ProjectList projects={projects} />
+        <Grid container spacing={3}>
+          {projects.map((project: Project) => (
+            <Grid item xs={12} sm={6} md={3} key={project.id}>
+              <ProjectCard
+                project={project}
+                hasMenu={Boolean(
+                  currentUser && currentUser.id === project.user.id
+                )}
+                onDelete={handleDeleteProject}
+              />
+            </Grid>
+          ))}
+        </Grid>
       ) : (
         <Typography variant="h6" className={classes.emptyText}>
           Projects is still empty.

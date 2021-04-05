@@ -1,13 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import FavoriteButton from "components/favorite/FavoriteButton";
 import { Project } from "interfaces/Project";
 import Link from "next/link";
+import ProjectCardMenu from "./ProjectCardMenu";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -18,13 +19,18 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
   },
+  space: {
+    flex: 1,
+  },
 }));
 
 interface Props {
   project: Project;
+  hasMenu?: boolean;
+  onDelete(id: string): void;
 }
 
-const ProjectCard: React.FC<Props> = ({ project }) => {
+const ProjectCard: React.FC<Props> = ({ project, hasMenu, onDelete }) => {
   const classes = useStyles();
 
   return (
@@ -53,6 +59,8 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
             Learn More
           </Button>
         </Link>
+        <div className={classes.space} />
+        {hasMenu && <ProjectCardMenu id={project.id} onDelete={onDelete} />}
       </CardActions>
     </Card>
   );

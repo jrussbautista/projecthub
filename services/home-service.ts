@@ -17,10 +17,13 @@ const getHomeData = async (): Promise<HomeData> => {
   const getFeaturedProjects = await projectsRef
     .limit(FEATURED_PROJECTS_LIMIT)
     .orderBy("favorites_count", "desc")
+    .where("status", "==", "active")
     .get();
+
   const getLatestProjects = await projectsRef
     .limit(LATEST_PROJECTS_LIMIT)
     .orderBy("created_at", "desc")
+    .where("status", "==", "active")
     .get();
 
   const latestProjects = getLatestProjects.docs.map((project) =>

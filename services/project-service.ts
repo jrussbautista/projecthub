@@ -33,6 +33,7 @@ const addProject = async ({
     image_url: downloadUrl,
     created_at: timestamp,
     updated_at: timestamp,
+    status: "active",
     user: {
       id: uid,
       name: displayName as string,
@@ -69,7 +70,10 @@ const getProjects = async ({
     query = query.orderBy(orderBy);
   }
 
-  const getProjects = await query.limit(PROJECTS_LIMIT).get();
+  const getProjects = await query
+    .limit(PROJECTS_LIMIT)
+    .where("status", "==", "active")
+    .get();
 
   return getProjects.docs.map((project) => {
     const projectDetails = postToJSON(project);
@@ -116,7 +120,10 @@ const getMoreProjects = async ({
 
   query = query.startAfter(cursor);
 
-  const getProjects = await query.limit(PROJECTS_LIMIT).get();
+  const getProjects = await query
+    .limit(PROJECTS_LIMIT)
+    .where("status", "==", "active")
+    .get();
 
   if (getProjects.docs.length === 0) return null;
 
@@ -154,7 +161,10 @@ const getRelatedProjects = async (category: string) => {
     query = query.where("category", "==", category);
   }
 
-  const getProjectsRef = await query.limit(RELATED_PROJECTS_LIMIT).get();
+  const getProjectsRef = await query
+    .limit(RELATED_PROJECTS_LIMIT)
+    .where("status", "==", "active")
+    .get();
 
   return getProjectsRef.docs.map((project) => {
     return {
@@ -164,10 +174,30 @@ const getRelatedProjects = async (category: string) => {
   });
 };
 
+const deleteProject = async (projectId: string) => {
+  const projectRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
+  const getProject = await projectRef.get();
+
+  if (!getProject.exists) throw new Error("Project not found");
+
+  return projectRef.update({ status: "inactive" });
+};
+
+const updateProject = async (projectId: string, data: Project) => {
+  const projectRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
+  const getProject = await projectRef.get();
+
+  if (!getProject.exists) throw new Error("Project not found");
+
+  return projectRef.update(data);
+};
+
 export const ProjectService = {
   addProject,
   getProjects,
   getProject,
   getRelatedProjects,
   getMoreProjects,
+  deleteProject,
+  updateProject,
 };

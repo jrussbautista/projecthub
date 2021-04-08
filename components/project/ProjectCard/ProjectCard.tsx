@@ -1,23 +1,23 @@
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import FavoriteButton from "components/favorite/FavoriteButton";
-import { Project } from "interfaces/Project";
-import Link from "next/link";
-import ProjectCardMenu from "./ProjectCardMenu";
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import FavoriteButton from 'components/favorite/FavoriteButton';
+import { Project } from 'interfaces/Project';
+import Link from 'next/link';
+import ProjectCardMenu from './ProjectCardMenu';
 
 const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: '56.25%', // 16:9
   },
   info: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   space: {
     flex: 1,
@@ -27,10 +27,16 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   project: Project;
   hasMenu?: boolean;
-  onDelete(id: string): void;
+  onDelete(project: Project): void;
+  onEdit(project: Project): void;
 }
 
-const ProjectCard: React.FC<Props> = ({ project, hasMenu, onDelete }) => {
+const ProjectCard: React.FC<Props> = ({
+  project,
+  hasMenu,
+  onDelete,
+  onEdit,
+}) => {
   const classes = useStyles();
 
   return (
@@ -45,7 +51,7 @@ const ProjectCard: React.FC<Props> = ({ project, hasMenu, onDelete }) => {
 
           <CardContent>
             <div className={classes.info}>
-              <Typography variant="body1" color="textSecondary" component="p">
+              <Typography variant='body1' color='textSecondary' component='p'>
                 {project.title}
               </Typography>
             </div>
@@ -55,12 +61,18 @@ const ProjectCard: React.FC<Props> = ({ project, hasMenu, onDelete }) => {
       <CardActions disableSpacing>
         <FavoriteButton project={project} />
         <Link href={`/projects/${project.id}`} passHref>
-          <Button size="small" color="primary">
+          <Button size='small' color='primary'>
             Learn More
           </Button>
         </Link>
         <div className={classes.space} />
-        {hasMenu && <ProjectCardMenu id={project.id} onDelete={onDelete} />}
+        {hasMenu && (
+          <ProjectCardMenu
+            project={project}
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
+        )}
       </CardActions>
     </Card>
   );

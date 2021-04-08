@@ -1,7 +1,7 @@
-import { auth, db, postToJSON, timestamp, fromMillis } from "lib/firebase";
-import { AddProject, Project } from "interfaces/Project";
-import { FirebaseStorage } from "lib/firebase-storage";
-import { PROJECTS_COLLECTION } from "./service-constants";
+import { auth, db, postToJSON, timestamp, fromMillis } from 'lib/firebase';
+import { AddProject, Project } from 'interfaces/Project';
+import { FirebaseStorage } from 'lib/firebase-storage';
+import { PROJECTS_COLLECTION } from './service-constants';
 
 const RELATED_PROJECTS_LIMIT = 4;
 const PROJECTS_LIMIT = 20;
@@ -16,7 +16,7 @@ const addProject = async ({
 }: AddProject) => {
   const currentUser = auth.currentUser;
 
-  if (!currentUser) throw new Error("Please log in first.");
+  if (!currentUser) throw new Error('Please log in first.');
 
   const { uid, displayName, photoURL } = currentUser;
 
@@ -33,7 +33,7 @@ const addProject = async ({
     image_url: downloadUrl,
     created_at: timestamp,
     updated_at: timestamp,
-    status: "active",
+    status: 'active',
     user: {
       id: uid,
       name: displayName as string,
@@ -45,34 +45,34 @@ const addProject = async ({
 };
 
 const getProjects = async ({
-  category = "",
-  search = "",
+  category = '',
+  search = '',
 }: {
   category?: string;
   search?: string;
 }) => {
   let query;
-  let orderBy = "created_at";
+  let orderBy = 'created_at';
 
   query = db.collection(PROJECTS_COLLECTION);
 
   if (category.length > 0) {
-    query = query.where("category", "==", category);
+    query = query.where('category', '==', category);
   }
 
   if (search) {
-    orderBy = "title";
+    orderBy = 'title';
     query = query
       .orderBy(orderBy)
       .startAt(search)
-      .endAt(search + "~");
+      .endAt(search + '~');
   } else {
     query = query.orderBy(orderBy);
   }
 
   const getProjects = await query
     .limit(PROJECTS_LIMIT)
-    .where("status", "==", "active")
+    .where('status', '==', 'active')
     .get();
 
   return getProjects.docs.map((project) => {
@@ -86,7 +86,7 @@ const getProjects = async ({
 };
 
 const getMoreProjects = async ({
-  search = "",
+  search = '',
   lastProject,
   category,
 }: {
@@ -95,25 +95,25 @@ const getMoreProjects = async ({
   category?: string;
 }) => {
   const cursor =
-    typeof lastProject.created_at === "number"
+    typeof lastProject.created_at === 'number'
       ? fromMillis(lastProject.created_at)
       : lastProject.created_at;
 
   let query;
-  let orderBy = "created_at";
+  let orderBy = 'created_at';
 
   query = db.collection(PROJECTS_COLLECTION);
 
   if (category) {
-    query = query.where("category", "==", category);
+    query = query.where('category', '==', category);
   }
 
   if (search) {
-    orderBy = "title";
+    orderBy = 'title';
     query = query
       .orderBy(orderBy)
       .startAt(search)
-      .endAt(search + "~");
+      .endAt(search + '~');
   } else {
     query = query.orderBy(orderBy);
   }
@@ -122,7 +122,7 @@ const getMoreProjects = async ({
 
   const getProjects = await query
     .limit(PROJECTS_LIMIT)
-    .where("status", "==", "active")
+    .where('status', '==', 'active')
     .get();
 
   if (getProjects.docs.length === 0) return null;
@@ -137,9 +137,7 @@ const getMoreProjects = async ({
   });
 };
 
-export const getProject = async (
-  projectId: string
-): Promise<Project | null> => {
+const getProject = async (projectId: string): Promise<Project | null> => {
   const projectRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
   const getProject = await projectRef.get();
 
@@ -158,12 +156,12 @@ const getRelatedProjects = async (category: string) => {
   query = db.collection(PROJECTS_COLLECTION);
 
   if (category) {
-    query = query.where("category", "==", category);
+    query = query.where('category', '==', category);
   }
 
   const getProjectsRef = await query
     .limit(RELATED_PROJECTS_LIMIT)
-    .where("status", "==", "active")
+    .where('status', '==', 'active')
     .get();
 
   return getProjectsRef.docs.map((project) => {
@@ -178,18 +176,28 @@ const deleteProject = async (projectId: string) => {
   const projectRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
   const getProject = await projectRef.get();
 
-  if (!getProject.exists) throw new Error("Project not found");
+  if (!getProject.exists) throw new Error('Project not found');
 
-  return projectRef.update({ status: "inactive" });
+  return projectRef.update({ status: 'inactive' });
 };
 
-const updateProject = async (projectId: string, data: Project) => {
+const updateProject = async (projectId: string, data: AddProject) => {
   const projectRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
   const getProject = await projectRef.get();
 
-  if (!getProject.exists) throw new Error("Project not found");
+  if (!getProject.exists) throw new Error('Project not found');
 
-  return projectRef.update(data);
+  const newProject = {
+    title: data.title,
+    description: data.description,
+    website_link: data.website_link,
+    github_link: data.github_link,
+    category: data.category,
+  };
+
+  await projectRef.update(newProject);
+
+  return newProject;
 };
 
 export const ProjectService = {

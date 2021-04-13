@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { ProjectService } from "services/project-service";
-import { Project } from "interfaces/Project";
-import { Status } from "interfaces/Status";
-import { makeStyles } from "@material-ui/core/styles";
-import { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import ProjectList from "components/project/ProjectList";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import FavoriteButton from "components/favorite/FavoriteButton";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Avatar from "@material-ui/core/Avatar";
-import Meta from "components/meta";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { ProjectService } from 'services/project-service';
+import { Project } from 'interfaces/Project';
+import { Status } from 'interfaces/Status';
+import { makeStyles } from '@material-ui/core/styles';
+import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import ProjectList from 'components/project/ProjectList';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import FavoriteButton from 'components/favorite/FavoriteButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Avatar from '@material-ui/core/Avatar';
+import Meta from 'components/meta';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,11 +23,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
   },
   cardImgContainer: {
-    width: "100%",
+    width: '100%',
   },
   media: {
     height: 0,
-    paddingTop: "40%",
+    paddingTop: '40%',
   },
   section: {
     marginTop: 30,
@@ -34,14 +35,14 @@ const useStyles = makeStyles((theme) => ({
   },
   cardDetails: {
     padding: 10,
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   button: {
     marginRight: 15,
   },
   loadingContainer: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 30,
   },
   description: {
@@ -51,8 +52,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
   },
   userDetails: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     marginTop: 10,
     marginBottom: 10,
   },
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   emptyText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 }));
 
@@ -70,20 +71,22 @@ const ProjectPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const classes = useStyles();
 
+  const { formatMessage } = useIntl();
+
   const [relatedProjectsStatus, setRelatedProjectsStatus] = useState<Status>(
-    "idle"
+    'idle'
   );
   const [relatedProjects, setRelatedProjects] = useState<Project[]>([]);
 
   useEffect(() => {
     const fetchRelatedProjects = async (category: string) => {
       try {
-        setRelatedProjectsStatus("idle");
+        setRelatedProjectsStatus('idle');
         const results = await ProjectService.getRelatedProjects(category);
         setRelatedProjects(results);
-        setRelatedProjectsStatus("success");
+        setRelatedProjectsStatus('success');
       } catch (error) {
-        setRelatedProjectsStatus("error");
+        setRelatedProjectsStatus('error');
       }
     };
 
@@ -105,7 +108,7 @@ const ProjectPage = ({
         </div>
         <div className={classes.cardDetails}>
           <div>
-            <Typography gutterBottom variant="h5">
+            <Typography gutterBottom variant='h5'>
               {project.title}
             </Typography>
             <Link href={`/user/${project.user.id}`}>
@@ -122,7 +125,7 @@ const ProjectPage = ({
                       {project.user.name.charAt(0)}
                     </Avatar>
                   )}
-                  <Typography gutterBottom variant="body1" color="textPrimary">
+                  <Typography gutterBottom variant='body1' color='textPrimary'>
                     {project.user.name}
                   </Typography>
                 </div>
@@ -130,8 +133,8 @@ const ProjectPage = ({
             </Link>
             <Typography
               gutterBottom
-              variant="h6"
-              color="textSecondary"
+              variant='h6'
+              color='textSecondary'
               className={classes.description}
             >
               {project.description}
@@ -141,22 +144,22 @@ const ProjectPage = ({
               <Button
                 href={project.website_link}
                 className={classes.button}
-                variant="contained"
-                color="primary"
+                variant='contained'
+                color='primary'
                 disableElevation
               >
-                Website
+                {formatMessage({ id: 'Website' })}
               </Button>
             )}
 
             {project.github_link && (
               <Button
                 href={project.github_link}
-                variant="contained"
-                color="default"
+                variant='contained'
+                color='default'
                 disableElevation
               >
-                Github
+                {formatMessage({ id: 'Github' })}
               </Button>
             )}
           </div>
@@ -166,24 +169,24 @@ const ProjectPage = ({
         </div>
       </Card>
       <div className={classes.relatedProjectContainer}>
-        {relatedProjectsStatus === "idle" ? (
+        {relatedProjectsStatus === 'idle' ? (
           <div className={classes.loadingContainer}>
             <CircularProgress />
           </div>
         ) : (
           <div>
-            <Typography variant="h5" gutterBottom>
-              Related Projects
+            <Typography variant='h5' gutterBottom>
+              {formatMessage({ id: 'Related Projects' })}
             </Typography>
             {relatedProjects.length > 0 ? (
               <ProjectList projects={relatedProjects} />
             ) : (
               <Typography
-                variant="h6"
+                variant='h6'
                 gutterBottom
                 className={classes.emptyText}
               >
-                No related projects.
+                {formatMessage({ id: 'No related projects' })}
               </Typography>
             )}
           </div>

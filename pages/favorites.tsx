@@ -1,11 +1,12 @@
-import { Container, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Alert from "@material-ui/lab/Alert";
-import FavoriteCard from "components/favorite/FavoriteCard";
-import Image from "next/image";
-import { useFavorites } from "contexts";
-import Meta from "components/meta";
+import { Container, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@material-ui/lab/Alert';
+import FavoriteCard from 'components/favorite/FavoriteCard';
+import Image from 'next/image';
+import { useFavorites } from 'contexts';
+import { useIntl } from 'react-intl';
+import Meta from 'components/meta';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,14 +17,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
   },
   loadingContainer: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 20,
   },
   emptyText: {
     marginTop: 40,
   },
   emptyContainer: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   emptyImage: {
     maxWidth: 300,
@@ -36,8 +37,9 @@ const useStyles = makeStyles((theme) => ({
 const Favorites = () => {
   const classes = useStyles();
   const { favorites, status } = useFavorites();
+  const { formatMessage } = useIntl();
 
-  if (status === "idle") {
+  if (status === 'idle') {
     return (
       <Container className={classes.container}>
         <div className={classes.loadingContainer}>
@@ -47,10 +49,10 @@ const Favorites = () => {
     );
   }
 
-  if (status === "error") {
+  if (status === 'error') {
     return (
       <Container className={classes.container}>
-        <Alert severity="error">
+        <Alert severity='error'>
           Unable to load your favorites right now. Please try again later.
         </Alert>
       </Container>
@@ -59,9 +61,9 @@ const Favorites = () => {
 
   return (
     <Container className={classes.container}>
-      <Meta title="Favorites" />
-      <Typography variant="h6" className={classes.heading}>
-        My Favorites
+      <Meta title='Favorites' />
+      <Typography variant='h6' className={classes.heading}>
+        {formatMessage({ id: 'My Favorites' })}
       </Typography>
       {favorites.length > 0 ? (
         favorites.map((favorite) => (
@@ -70,14 +72,14 @@ const Favorites = () => {
       ) : (
         <div className={classes.emptyContainer}>
           <Image
-            alt="empty favorites"
-            src="/images/empty.svg"
-            width="300"
-            height="300"
+            alt='empty favorites'
+            src='/images/empty.svg'
+            width='300'
+            height='300'
             className={classes.emptyImage}
           />
 
-          <Typography variant="body1" className={classes.emptyText}>
+          <Typography variant='body1' className={classes.emptyText}>
             Your favorites is empty :(
           </Typography>
         </div>

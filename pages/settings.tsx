@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { Container, Typography } from "@material-ui/core";
-import { useAuth, useTheme } from "contexts";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
-import Switch from "@material-ui/core/Switch";
-import ChangePassword from "components/settings/ChangePassword";
-import EditProfile from "components/settings/EditProfile";
-import Meta from "components/meta";
+import React, { useState } from 'react';
+import { Container, Typography } from '@material-ui/core';
+import { useAuth, useTheme } from 'contexts';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
+import Switch from '@material-ui/core/Switch';
+import ChangePassword from 'components/settings/ChangePassword';
+import EditProfile from 'components/settings/EditProfile';
+import Meta from 'components/meta';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
   },
   profile: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: 20,
   },
@@ -46,12 +47,12 @@ interface Menu {
 
 const MENUS: Menu[] = [
   {
-    id: "edit-profile",
-    title: "Edit Profile",
+    id: 'edit-profile',
+    title: 'Edit Profile',
   },
   {
-    id: "change-password",
-    title: "Change Password",
+    id: 'change-password',
+    title: 'Change Password',
   },
 ];
 
@@ -60,6 +61,7 @@ const Settings = () => {
 
   const { currentUser } = useAuth();
   const { theme, toggle } = useTheme();
+  const { formatMessage } = useIntl();
 
   const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
 
@@ -71,42 +73,44 @@ const Settings = () => {
 
   const renderSelectedMenu = () => {
     switch (selectedMenu) {
-      case "edit-profile":
+      case 'edit-profile':
         return <EditProfile />;
-      case "change-password":
+      case 'change-password':
         return <ChangePassword />;
     }
   };
 
   return (
     <Container className={classes.container}>
-      <Meta title="Settings" />
-      <Typography variant="h5"> My Settings</Typography>
+      <Meta title='Settings' />
+      <Typography variant='h5'>
+        {formatMessage({ id: 'My Settings' })}
+      </Typography>
       {currentUser && (
-        <List component="nav">
+        <List component='nav'>
           <ListItem button>
-            <ListItemText primary="Dark Mode" />
+            <ListItemText primary={formatMessage({ id: 'Dark Mode' })} />
             <Switch
-              checked={theme === "dark"}
+              checked={theme === 'dark'}
               onChange={toggle}
-              color="primary"
-              inputProps={{ "aria-label": "toggle checkbox" }}
+              color='primary'
+              inputProps={{ 'aria-label': 'toggle checkbox' }}
             />
           </ListItem>
           <Divider />
           {MENUS.map((menu) => (
             <div key={menu.id}>
               <ListItem button onClick={() => handleClick(menu.id)}>
-                <ListItemText primary={menu.title} />
+                <ListItemText primary={formatMessage({ id: menu.title })} />
                 {selectedMenu === menu.id ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Divider />
               <Collapse
                 in={selectedMenu === menu.id}
-                timeout="auto"
+                timeout='auto'
                 unmountOnExit
               >
-                <List component="div">{renderSelectedMenu()}</List>
+                <List component='div'>{renderSelectedMenu()}</List>
               </Collapse>
             </div>
           ))}

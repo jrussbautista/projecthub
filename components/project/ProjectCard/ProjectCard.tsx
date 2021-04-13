@@ -9,6 +9,7 @@ import FavoriteButton from 'components/favorite/FavoriteButton';
 import { Project } from 'interfaces/Project';
 import Link from 'next/link';
 import ProjectCardMenu from './ProjectCardMenu';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -39,6 +40,8 @@ const ProjectCard: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
+  const { formatMessage } = useIntl();
+
   return (
     <Card>
       <Link href={`/projects/${project.id}`}>
@@ -62,7 +65,7 @@ const ProjectCard: React.FC<Props> = ({
         <FavoriteButton project={project} />
         <Link href={`/projects/${project.id}`} passHref>
           <Button size='small' color='primary'>
-            Learn More
+            {formatMessage({ id: 'Learn More' })}
           </Button>
         </Link>
         <div className={classes.space} />

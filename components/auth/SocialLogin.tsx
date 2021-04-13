@@ -1,9 +1,10 @@
-import Button from "@material-ui/core/Button";
-import Google from "components/icons/Google";
-import { makeStyles } from "@material-ui/core/styles";
-import Github from "components/icons/Github";
-import { useAuth, useModal } from "contexts";
-import { Provider } from "interfaces/Auth";
+import Button from '@material-ui/core/Button';
+import Google from 'components/icons/Google';
+import { makeStyles } from '@material-ui/core/styles';
+import Github from 'components/icons/Github';
+import { useAuth, useModal } from 'contexts';
+import { Provider } from 'interfaces/Auth';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   buttonsContainer: {
@@ -17,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
   },
   buttonGithub: {
-    backgroundColor: "#1b1f23",
-    color: "#fff",
+    backgroundColor: '#1b1f23',
+    color: '#fff',
   },
 }));
 
@@ -29,6 +30,8 @@ interface Props {
 const SocialLogin: React.FC<Props> = ({ onError }) => {
   const { closeModal } = useModal();
   const { socialLogin } = useAuth();
+
+  const { formatMessage } = useIntl();
 
   const classes = useStyles();
 
@@ -45,27 +48,31 @@ const SocialLogin: React.FC<Props> = ({ onError }) => {
     <div className={classes.buttonsContainer}>
       <Button
         fullWidth
-        type="button"
-        variant="outlined"
-        size="large"
+        type='button'
+        variant='outlined'
+        size='large'
         className={classes.button}
         disableElevation
-        onClick={() => handleSocialLogin("google")}
+        onClick={() => handleSocialLogin('google')}
       >
-        <span className={classes.buttonText}>Log In with Google</span>
+        <span className={classes.buttonText}>
+          {formatMessage({ id: 'Login with google' })}
+        </span>
         <Google />
       </Button>
       <Button
         fullWidth
-        type="button"
-        variant="contained"
-        size="large"
+        type='button'
+        variant='contained'
+        size='large'
         className={`${classes.button} ${classes.buttonGithub}`}
-        color="default"
+        color='default'
         disableElevation
-        onClick={() => handleSocialLogin("github")}
+        onClick={() => handleSocialLogin('github')}
       >
-        <span className={classes.buttonText}>Log In with Github</span>
+        <span className={classes.buttonText}>
+          {formatMessage({ id: 'Login with github' })}
+        </span>
         <Github />
       </Button>
     </div>

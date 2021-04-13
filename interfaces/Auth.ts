@@ -20,4 +20,4 @@ export interface SignUp {
   password: string;
 }
 
-export type Provider = "github" | "google";
+export type Provider = 'github' | 'google';

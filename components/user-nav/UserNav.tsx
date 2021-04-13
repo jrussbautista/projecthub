@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { useAuth, useModal } from "contexts";
-import Link from "next/link";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
-import Dropdown from "./Dropdown";
-import SearchIcon from "@material-ui/icons/Search";
-import { makeStyles } from "@material-ui/core/styles";
-import { IconButton } from "@material-ui/core";
+import { useState } from 'react';
+import { useAuth, useModal } from 'contexts';
+import Link from 'next/link';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import Dropdown from './Dropdown';
+import SearchIcon from '@material-ui/icons/Search';
+import { makeStyles } from '@material-ui/core/styles';
+import { IconButton } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   headerLink: {
@@ -15,20 +16,20 @@ const useStyles = makeStyles((theme) => ({
   },
   avatarBackgroundColor: {
     backgroundColor: theme.palette.primary.main,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   avatarButtonContainer: {
-    backgroundColor: "transparent",
-    border: "transparent",
+    backgroundColor: 'transparent',
+    border: 'transparent',
   },
   list: {
-    display: "flex",
-    alignItems: "center",
-    padding: "0 10px",
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 10px',
   },
   searchIconContainer: {
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 }));
@@ -39,6 +40,8 @@ interface Props {
 
 const UserNav: React.FC<Props> = ({ toggleSearchBar }) => {
   const classes = useStyles();
+
+  const { formatMessage } = useIntl();
 
   const { currentUser } = useAuth();
 
@@ -59,7 +62,7 @@ const UserNav: React.FC<Props> = ({ toggleSearchBar }) => {
       <ul className={classes.list}>
         <li className={classes.headerLink}>
           <div className={classes.searchIconContainer}>
-            <IconButton aria-label="search" onClick={toggleSearchBar}>
+            <IconButton aria-label='search' onClick={toggleSearchBar}>
               <SearchIcon />
             </IconButton>
           </div>
@@ -67,20 +70,20 @@ const UserNav: React.FC<Props> = ({ toggleSearchBar }) => {
         {currentUser ? (
           <>
             <li className={classes.headerLink}>
-              <Link href="/projects/create" passHref>
+              <Link href='/projects/create' passHref>
                 <Button
-                  color="primary"
+                  color='primary'
                   disableElevation
-                  variant="contained"
+                  variant='contained'
                   startIcon={<AddIcon />}
                 >
-                  Project
+                  {formatMessage({ id: 'Project' })}
                 </Button>
               </Link>
             </li>
             <li className={classes.headerLink}>
               <button
-                type="button"
+                type='button'
                 onClick={handleOpenDropdown}
                 className={classes.avatarButtonContainer}
               >
@@ -94,11 +97,11 @@ const UserNav: React.FC<Props> = ({ toggleSearchBar }) => {
         ) : (
           <li>
             <Button
-              color="primary"
-              variant="contained"
-              onClick={() => openModal("LOGIN_VIEW")}
+              color='primary'
+              variant='contained'
+              onClick={() => openModal('LOGIN_VIEW')}
             >
-              Sign In
+              {formatMessage({ id: 'Sign In' })}
             </Button>
           </li>
         )}

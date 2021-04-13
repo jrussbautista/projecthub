@@ -12,6 +12,7 @@ import Meta from 'components/meta';
 import { useAuth, useNotification } from 'contexts';
 import { ProjectService } from 'services/project-service';
 import ProjectEditModal from 'components/project/ProjectEditModal';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,6 +33,7 @@ const UserPage = ({
   projects: initialProjects,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const classes = useStyles();
+  const { formatMessage } = useIntl();
 
   const [projects, setProjects] = useState<Project[]>(initialProjects ?? []);
   const [isOpenEditProjectModal, setIsOpenEditProjectModal] = useState(false);
@@ -99,7 +101,7 @@ const UserPage = ({
         <Meta title={user.name} />
         <UserDetails user={user} />
         <Typography variant='h5' className={classes.heading}>
-          Projects
+          {formatMessage({ id: 'Projects' })}
         </Typography>
         {projects.length > 0 ? (
           <Grid container spacing={3}>

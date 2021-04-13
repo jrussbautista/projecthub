@@ -1,24 +1,25 @@
-import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Alert from "@material-ui/lab/Alert";
-import { ChangePassword as ChangePasswordType } from "interfaces/Auth";
-import { AuthService } from "services/auth-service";
+import React, { useState } from 'react';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { useForm } from 'react-hook-form';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@material-ui/lab/Alert';
+import { ChangePassword as ChangePasswordType } from 'interfaces/Auth';
+import { AuthService } from 'services/auth-service';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    width: "100%",
+    width: '100%',
   },
   input: {
-    display: "block",
-    width: "100%",
+    display: 'block',
+    width: '100%',
     marginBottom: 20,
   },
   heading: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   button: {
     marginTop: 20,
@@ -30,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
   },
   saveContainer: {
-    display: "flex",
-    justifyContent: "flex-end",
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 }));
 
@@ -49,6 +50,8 @@ const ChangePassword = () => {
     reset,
   } = useForm<ChangePasswordType>();
 
+  const { formatMessage } = useIntl();
+
   const onSubmit = async ({
     oldPassword,
     newPassword,
@@ -63,10 +66,10 @@ const ChangePassword = () => {
         confirmNewPassword,
       });
       setLoading(false);
-      setSuccess("Successfully changed password");
+      setSuccess('Successfully changed password');
       reset();
     } catch (error) {
-      setError("Unable to changed password right now. Please try again later");
+      setError('Unable to changed password right now. Please try again later');
       setLoading(false);
       setSuccess(null);
     }
@@ -76,64 +79,64 @@ const ChangePassword = () => {
     <>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
         {success && (
-          <Alert className={classes.alertContainer} severity="success">
+          <Alert className={classes.alertContainer} severity='success'>
             {success}
           </Alert>
         )}
         {error && (
-          <Alert className={classes.alertContainer} severity="error">
+          <Alert className={classes.alertContainer} severity='error'>
             {error}
           </Alert>
         )}
         <TextField
-          id="standard-basic"
-          label="Old Password"
-          autoComplete="true"
-          type="password"
+          id='standard-basic'
+          label={formatMessage({ id: 'Old Password' })}
+          autoComplete='true'
+          type='password'
           className={classes.input}
           fullWidth
-          name="oldPassword"
+          name='oldPassword'
           inputRef={register({
-            required: "Old password is required field",
+            required: 'Old password is required field',
             minLength: {
               value: 6,
-              message: "Old password must be at least 6 characters long",
+              message: 'Old password must be at least 6 characters long',
             },
           })}
           error={Boolean(errors.oldPassword)}
           helperText={errors.oldPassword && errors.oldPassword.message}
         />
         <TextField
-          id="standard-basic"
-          label="New Password"
-          autoComplete="true"
-          type="password"
+          id='standard-basic'
+          label={formatMessage({ id: 'New Password' })}
+          autoComplete='true'
+          type='password'
           className={classes.input}
           fullWidth
-          name="newPassword"
+          name='newPassword'
           inputRef={register({
-            required: "New password is required field",
+            required: 'New password is required field',
             minLength: {
               value: 6,
-              message: "New password must be at least 6 characters long",
+              message: 'New password must be at least 6 characters long',
             },
           })}
           error={Boolean(errors.newPassword)}
           helperText={errors.newPassword && errors.newPassword.message}
         />
         <TextField
-          id="standard-basic"
-          label="Confirm New Password"
-          autoComplete="true"
-          type="password"
+          id='standard-basic'
+          label={formatMessage({ id: 'Confirm New Password' })}
+          autoComplete='true'
+          type='password'
           className={classes.input}
           fullWidth
-          name="confirmNewPassword"
+          name='confirmNewPassword'
           inputRef={register({
-            required: "New password is required field",
+            required: 'New password is required field',
             minLength: {
               value: 6,
-              message: "New password must be at least 6 characters long",
+              message: 'New password must be at least 6 characters long',
             },
           })}
           error={Boolean(errors.confirmNewPassword)}
@@ -144,14 +147,14 @@ const ChangePassword = () => {
         <div className={classes.saveContainer}>
           <Button
             className={classes.button}
-            variant="contained"
-            color="primary"
-            size="large"
+            variant='contained'
+            color='primary'
+            size='large'
             disableElevation
-            type="submit"
+            type='submit'
             disabled={loading}
           >
-            {loading ? <CircularProgress size={30} /> : "Save"}
+            {loading ? <CircularProgress size={30} /> : 'Save'}
           </Button>
         </div>
       </form>

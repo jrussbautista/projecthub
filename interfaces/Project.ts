@@ -1,4 +1,4 @@
-import { User } from "./User";
+import { User } from './User';
 
 export interface AddProject {
   title: string;
@@ -12,6 +12,7 @@ export interface AddProject {
 
 export interface Project {
   id: string;
+  slug: string;
   title: string;
   image_url: string;
   description: string;
@@ -24,4 +25,4 @@ export interface Project {
   user: User;
 }
 
-export type Field = "my_projects" | "all_projects";
+export type Field = 'my_projects' | 'all_projects';

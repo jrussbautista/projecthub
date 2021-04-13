@@ -2,6 +2,7 @@ import { auth, db, postToJSON, timestamp, fromMillis } from 'lib/firebase';
 import { AddProject, Project } from 'interfaces/Project';
 import { FirebaseStorage } from 'lib/firebase-storage';
 import { PROJECTS_COLLECTION } from './service-constants';
+import slugify from 'utils/slugify';
 
 const RELATED_PROJECTS_LIMIT = 4;
 const PROJECTS_LIMIT = 20;
@@ -26,6 +27,7 @@ const addProject = async ({
 
   const newProject = {
     title,
+    slug: slugify(title),
     description,
     website_link,
     github_link,
@@ -137,16 +139,19 @@ const getMoreProjects = async ({
   });
 };
 
-const getProject = async (projectId: string): Promise<Project | null> => {
-  const projectRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
+const getProjectBySlug = async (slug: string): Promise<Project | null> => {
+  const projectRef = db
+    .collection(PROJECTS_COLLECTION)
+    .where('slug', '==', slug);
   const getProject = await projectRef.get();
 
-  if (!getProject.exists) return null;
-  const project = postToJSON(getProject);
+  if (getProject.empty) return null;
+
+  const project = postToJSON(getProject.docs[0]);
 
   return {
     ...(project as Project),
-    id: getProject.id,
+    id: getProject.docs[0].id,
   };
 };
 
@@ -203,7 +208,7 @@ const updateProject = async (projectId: string, data: AddProject) => {
 export const ProjectService = {
   addProject,
   getProjects,
-  getProject,
+  getProjectBySlug,
   getRelatedProjects,
   getMoreProjects,
   deleteProject,

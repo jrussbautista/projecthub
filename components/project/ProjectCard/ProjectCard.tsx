@@ -44,7 +44,7 @@ const ProjectCard: React.FC<Props> = ({
 
   return (
     <Card>
-      <Link href={`/projects/${project.id}`}>
+      <Link href={`/projects/${project.slug}`}>
         <a>
           <CardMedia
             className={classes.media}

@@ -199,9 +199,9 @@ const ProjectPage = ({
 export default ProjectPage;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { id } = query;
+  const { slug } = query;
 
-  const project = await ProjectService.getProject(id as string);
+  const project = await ProjectService.getProjectBySlug(slug as string);
 
   if (!project) {
     return {

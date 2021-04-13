@@ -108,7 +108,7 @@ const CreateProject = () => {
       const result = await ProjectService.addProject(newProject);
       setPosting(false);
       setSuccess(true);
-      const url = `/projects/${result.id}`;
+      const url = `/projects/${result.slug}`;
       Router.push(url);
     } catch (error) {
       console.log(error);

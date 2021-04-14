@@ -1,22 +1,23 @@
-import React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import { ServerStyleSheets } from "@material-ui/core/styles";
-import { lightTheme } from "theme/theme";
+import React from 'react';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { ServerStyleSheets } from '@material-ui/core/styles';
+import { lightTheme } from 'theme/theme';
 
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang='en'>
         <Head>
-          <meta name="theme-color" content={lightTheme.palette.primary.main} />
+          <meta name='theme-color' content={lightTheme.palette.primary.main} />
           <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Lato:300,400,500,700&display=swap"
+            rel='stylesheet'
+            href='https://fonts.googleapis.com/css?family=Lato:300,400,500,700&display=swap'
           />
           <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,700&display=swap"
+            rel='stylesheet'
+            href='https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,700&display=swap'
           />
+          <link rel='stylesheet' href='/css/nprogress.css' />
         </Head>
         <body>
           <Main />

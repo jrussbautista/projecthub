@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    padding: 50,
+    padding: '50px 0',
     marginTop: 100,
     borderTop: `1px solid ${theme.palette.grey[300]}`,
   },
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     minWidth: 160,
+    marginLeft: 10,
   },
 }));
 

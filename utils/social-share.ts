@@ -1,3 +1,5 @@
+import { FB_CLIENT_ID } from './constants';
+
 const socialShare = (provider: 'fb' | 'twitter', url: string = ''): void => {
   url = url ? url : window.location.href;
 
@@ -5,7 +7,7 @@ const socialShare = (provider: 'fb' | 'twitter', url: string = ''): void => {
     case 'fb':
       window.open(
         `https://www.facebook.com/dialog/feed?app_id=${encodeURIComponent(
-          '224938085116846'
+          `${FB_CLIENT_ID}`
         )}&link=${encodeURIComponent(url)}`,
         'facebook-share-dialog',
         'width=626,height=436'

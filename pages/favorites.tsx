@@ -8,7 +8,7 @@ import { useFavorites } from 'contexts';
 import { useIntl } from 'react-intl';
 import Meta from 'components/meta';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
     marginBottom: 20,
     marginTop: 20,

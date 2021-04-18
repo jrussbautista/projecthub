@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import { SignUp } from "interfaces/Auth";
-import { useModal, useAuth } from "contexts";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Alert from "@material-ui/lab/Alert";
-import SocialLogin from "./SocialLogin";
+import React, { useState } from 'react';
+import { SignUp } from 'interfaces/Auth';
+import { useModal, useAuth } from 'contexts';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { useForm } from 'react-hook-form';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@material-ui/lab/Alert';
+import SocialLogin from './SocialLogin';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   form: {
-    width: "auto",
+    width: 'auto',
   },
   input: {
-    display: "block",
-    width: "100%",
+    display: 'block',
+    width: '100%',
     marginBottom: 20,
   },
   heading: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   button: {
     marginTop: 20,
@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
     height: 50,
   },
   linkContainer: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   link: {
-    textTransform: "none",
+    textTransform: 'none',
   },
   errorContainer: {
     marginTop: 20,
@@ -70,63 +70,63 @@ const SignUpView = () => {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h5" gutterBottom className={classes.heading}>
+      <Typography variant='h5' gutterBottom className={classes.heading}>
         ProjectHub
       </Typography>
       {error && (
-        <Alert className={classes.errorContainer} severity="error">
+        <Alert className={classes.errorContainer} severity='error'>
           {error}
         </Alert>
       )}
       <TextField
-        id="standard-basic"
-        label="Name"
-        name="name"
-        type="name"
+        id='standard-basic'
+        label='Name'
+        name='name'
+        type='name'
         className={classes.input}
-        autoComplete="true"
+        autoComplete='true'
         fullWidth
         inputRef={register({
-          required: "Name is required field",
+          required: 'Name is required field',
           minLength: {
             value: 6,
-            message: "Name must be at least 6 characters long",
+            message: 'Name must be at least 6 characters long',
           },
         })}
         error={Boolean(errors.name)}
         helperText={errors.name && errors.name.message}
       />
       <TextField
-        id="standard-basic"
-        label="Email"
-        autoComplete="true"
-        type="email"
+        id='standard-basic'
+        label='Email'
+        autoComplete='true'
+        type='email'
         className={classes.input}
         fullWidth
-        name="email"
+        name='email'
         inputRef={register({
-          required: "Email is required field",
+          required: 'Email is required field',
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: "invalid email address",
+            message: 'invalid email address',
           },
         })}
         error={Boolean(errors.email)}
         helperText={errors.email && errors.email.message}
       />
       <TextField
-        id="standard-basic"
-        label="Password"
-        name="password"
-        type="password"
+        id='standard-basic'
+        label='Password'
+        name='password'
+        type='password'
         className={classes.input}
-        autoComplete="true"
+        autoComplete='true'
         fullWidth
         inputRef={register({
-          required: "Password is required field",
+          required: 'Password is required field',
           minLength: {
             value: 6,
-            message: "Password must be at least 6 characters long",
+            message: 'Password must be at least 6 characters long',
           },
         })}
         error={Boolean(errors.password)}
@@ -135,21 +135,21 @@ const SignUpView = () => {
       <Button
         className={classes.button}
         fullWidth
-        variant="contained"
-        color="primary"
-        size="large"
+        variant='contained'
+        color='primary'
+        size='large'
         disableElevation
-        type="submit"
+        type='submit'
         disabled={loading}
       >
-        {loading ? <CircularProgress size={30} /> : "Sign Up"}
+        {loading ? <CircularProgress size={30} /> : 'Sign Up'}
       </Button>
       <div className={classes.linkContainer}>
         <span>Have an account?</span>
         <Button
-          color="primary"
+          color='primary'
           className={classes.link}
-          onClick={() => openModal("LOGIN_VIEW")}
+          onClick={() => openModal('LOGIN_VIEW')}
         >
           Log In
         </Button>

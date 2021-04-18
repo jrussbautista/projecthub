@@ -6,7 +6,7 @@ import { useAuth, useModal } from 'contexts';
 import { Provider } from 'interfaces/Auth';
 import { useIntl } from 'react-intl';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   buttonsContainer: {
     marginTop: 30,
   },

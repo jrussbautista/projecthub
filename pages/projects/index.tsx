@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { Container, Typography, makeStyles, Button } from "@material-ui/core";
-import ProjectList from "components/project/ProjectList";
-import { Project } from "interfaces/Project";
-import { ProjectService } from "services/project-service";
-import { CircularProgress } from "@material-ui/core";
-import { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import useCategories from "hooks/use-categories";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Meta from "components/meta";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Container, Typography, makeStyles, Button } from '@material-ui/core';
+import ProjectList from 'components/project/ProjectList';
+import { Project } from 'interfaces/Project';
+import { ProjectService } from 'services/project-service';
+import { CircularProgress } from '@material-ui/core';
+import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import useCategories from 'hooks/use-categories';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Meta from 'components/meta';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -19,17 +19,17 @@ const useStyles = makeStyles(() => ({
   },
   loadingContainer: {
     marginTop: 30,
-    textAlign: "center",
+    textAlign: 'center',
   },
   heading: {
     marginBottom: 20,
   },
   emptyText: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 30,
   },
   loadMoreContainer: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 30,
   },
   categoryContainer: {
@@ -90,34 +90,34 @@ const Projects = ({
       setProjects([...projects, ...results]);
     } catch (error) {
       console.log(error);
-      alert("Unable to view more projects. Please try again later.");
+      alert('Unable to view more projects. Please try again later.');
     } finally {
       setIsViewingMore(false);
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+  const handleChange = (_event: React.ChangeEvent<{}>, newValue: string) => {
     setSelectedTab(newValue);
   };
 
   return (
     <Container className={classes.container}>
-      <Meta title="Projects" />
+      <Meta title='Projects' />
       {searchText && (
-        <Typography variant="h5" className={classes.heading}>
+        <Typography variant='h5' className={classes.heading}>
           Search results for <strong>{searchText}</strong>
         </Typography>
       )}
-      <Typography variant="h5" className={classes.heading}>
+      <Typography variant='h5' className={classes.heading}>
         Categories
       </Typography>
       <Paper square className={classes.categoryContainer}>
         <Tabs
           value={selectedTab || false}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor='primary'
+          textColor='primary'
           onChange={handleChange}
-          aria-label="category tabs"
+          aria-label='category tabs'
         >
           {categories.map((category) => (
             <Tab
@@ -135,21 +135,21 @@ const Projects = ({
           <div className={classes.loadMoreContainer}>
             {hasViewMore ? (
               <Button
-                type="button"
-                variant="contained"
-                color="primary"
+                type='button'
+                variant='contained'
+                color='primary'
                 onClick={handleViewMore}
                 disabled={isViewingMore}
               >
-                {isViewingMore ? <CircularProgress size={30} /> : "View More"}
+                {isViewingMore ? <CircularProgress size={30} /> : 'View More'}
               </Button>
             ) : (
-              <Typography color="error"> You reached the end. </Typography>
+              <Typography color='error'> You reached the end. </Typography>
             )}
           </div>
         </>
       ) : (
-        <Typography color="error" className={classes.emptyText}>
+        <Typography color='error' className={classes.emptyText}>
           No projects yet.
         </Typography>
       )}

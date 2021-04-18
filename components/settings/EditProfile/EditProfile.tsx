@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Alert from "@material-ui/lab/Alert";
-import { useAuth } from "contexts/auth/AuthContext";
-import { UpdateProfile } from "interfaces/Auth";
-import PasswordModal from "../PasswordModal";
+import React, { useState } from 'react';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { useForm } from 'react-hook-form';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@material-ui/lab/Alert';
+import { useAuth } from 'contexts/auth/AuthContext';
+import { UpdateProfile } from 'interfaces/Auth';
+import PasswordModal from '../PasswordModal';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   form: {
-    width: "100%",
+    width: '100%',
   },
   input: {
-    display: "block",
-    width: "100%",
+    display: 'block',
+    width: '100%',
     marginBottom: 20,
   },
   heading: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   button: {
     marginTop: 20,
@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
   },
   saveContainer: {
-    display: "flex",
-    justifyContent: "flex-end",
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 }));
 
@@ -50,16 +50,16 @@ const EditProfile = () => {
     defaultValues: { name: currentUser?.name, email: currentUser?.email },
   });
 
-  const name = watch("name", "");
-  const email = watch("email", "");
+  const name = watch('name', '');
+  const email = watch('email', '');
 
-  const onUpdateProfile = async (password: string = "") => {
+  const onUpdateProfile = async (password: string = '') => {
     try {
       setLoading(true);
       setError(null);
       await updateProfile({ email, name, password });
       setLoading(false);
-      setSuccess("Successfully updated profile");
+      setSuccess('Successfully updated profile');
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -93,46 +93,46 @@ const EditProfile = () => {
 
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
         {success && (
-          <Alert className={classes.alertContainer} severity="success">
+          <Alert className={classes.alertContainer} severity='success'>
             {success}
           </Alert>
         )}
         {error && (
-          <Alert className={classes.alertContainer} severity="error">
+          <Alert className={classes.alertContainer} severity='error'>
             {error}
           </Alert>
         )}
         <TextField
-          id="standard-basic"
-          label="Name"
-          autoComplete="true"
-          type="text"
+          id='standard-basic'
+          label='Name'
+          autoComplete='true'
+          type='text'
           className={classes.input}
           fullWidth
-          name="name"
+          name='name'
           inputRef={register({
-            required: "Name is required field",
+            required: 'Name is required field',
             minLength: {
               value: 6,
-              message: "Name must be at least 6 characters long",
+              message: 'Name must be at least 6 characters long',
             },
           })}
           error={Boolean(errors.name)}
           helperText={errors.name && errors.name.message}
         />
         <TextField
-          id="standard-basic"
-          label="Email"
-          autoComplete="true"
-          type="email"
+          id='standard-basic'
+          label='Email'
+          autoComplete='true'
+          type='email'
           className={classes.input}
           fullWidth
-          name="email"
+          name='email'
           inputRef={register({
-            required: "Email is required field",
+            required: 'Email is required field',
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "invalid email address",
+              message: 'invalid email address',
             },
           })}
           error={Boolean(errors.email)}
@@ -141,14 +141,14 @@ const EditProfile = () => {
         <div className={classes.saveContainer}>
           <Button
             className={classes.button}
-            variant="contained"
-            color="primary"
-            size="large"
+            variant='contained'
+            color='primary'
+            size='large'
             disableElevation
-            type="submit"
+            type='submit'
             disabled={loading}
           >
-            {loading ? <CircularProgress size={30} /> : "Save"}
+            {loading ? <CircularProgress size={30} /> : 'Save'}
           </Button>
         </div>
       </form>

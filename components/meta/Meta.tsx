@@ -15,8 +15,8 @@ const Meta: React.FC<Props> = ({
   return (
     <Head>
       <title>{title}</title>
-      <meta name='twitter:card' content='summary' />
-      <meta name='twitter:site' content='@dev' />
+      <meta name='twitter:card' content={description} />
+      <meta name='twitter:site' content='@projecthub' />
       <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content={description} />
       <meta name='twitter:image' content={image} />

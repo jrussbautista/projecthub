@@ -43,7 +43,12 @@ const addProject = async ({
     },
   };
 
-  return projectRef.add(newProject);
+  const id = await projectRef.add(newProject);
+
+  return {
+    id,
+    ...newProject,
+  };
 };
 
 const getProjects = async ({

@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
-type Type = "success" | "error";
+type Type = 'success' | 'error';
 
 interface InitialState {
   visible: boolean;
@@ -10,13 +10,13 @@ interface InitialState {
 
 const initialState: InitialState = {
   visible: false,
-  message: "",
-  type: "success",
+  message: '',
+  type: 'success',
 };
 
 const NotificationContext = createContext({
   ...initialState,
-  showNotification: (type: Type, message: string) => {},
+  showNotification: (_type: Type, _message: string) => {},
   closeNotification: () => {},
 });
 

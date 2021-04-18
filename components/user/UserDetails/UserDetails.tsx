@@ -1,5 +1,5 @@
 import { Avatar, Typography } from '@material-ui/core';
-import { User } from 'types/User';
+import { User } from 'interfaces/User';
 import { makeStyles } from '@material-ui/core/styles';
 
 interface Props {

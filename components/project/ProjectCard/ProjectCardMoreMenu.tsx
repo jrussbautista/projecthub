@@ -19,12 +19,12 @@ const ProjectCardMoreMenu: React.FC<Props> = ({
   onClose,
 }) => {
   const handleDelete = () => {
-    onDelete(project);
+    onDelete && onDelete(project);
     onClose();
   };
 
   const handleEdit = () => {
-    onEdit(project);
+    onEdit && onEdit(project);
     onClose();
   };
 

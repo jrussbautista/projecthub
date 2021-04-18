@@ -9,7 +9,7 @@ import { ChangePassword as ChangePasswordType } from 'interfaces/Auth';
 import { AuthService } from 'services/auth-service';
 import { useIntl } from 'react-intl';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   form: {
     width: '100%',
   },

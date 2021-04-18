@@ -11,7 +11,7 @@ import { useIntl } from 'react-intl';
 import { Login } from 'interfaces/Auth';
 import SocialLogin from './SocialLogin';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   form: {
     width: 'auto',
   },

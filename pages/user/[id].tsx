@@ -14,7 +14,7 @@ import { ProjectService } from 'services/project-service';
 import ProjectEditModal from 'components/project/ProjectEditModal';
 import { useIntl } from 'react-intl';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
     marginBottom: 20,
     marginTop: 20,

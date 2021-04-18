@@ -1,6 +1,6 @@
-import { Avatar, Typography } from "@material-ui/core";
-import { User } from "types/User";
-import { makeStyles } from "@material-ui/core/styles";
+import { Avatar, Typography } from '@material-ui/core';
+import { User } from 'types/User';
+import { makeStyles } from '@material-ui/core/styles';
 
 interface Props {
   user: User;
@@ -8,9 +8,9 @@ interface Props {
 
 const useStyles = makeStyles((theme) => ({
   user: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 30,
     marginBottom: 30,
   },
@@ -29,12 +29,20 @@ const UserDetails: React.FC<Props> = ({ user }) => {
 
   return (
     <div className={classes.user}>
-      <Avatar className={classes.avatar}>
-        {user.name?.charAt(0).toUpperCase()}
-      </Avatar>
+      {user.photo_url ? (
+        <Avatar
+          src={user.photo_url}
+          alt={user.name}
+          className={classes.avatar}
+        />
+      ) : (
+        <Avatar aria-label='recipe' className={classes.avatar}>
+          {user.name.charAt(0)}
+        </Avatar>
+      )}
       <div className={classes.right}>
-        <Typography variant="h6">{user.name}</Typography>
-        <Typography variant="body1">{user.email}</Typography>
+        <Typography variant='h6'>{user.name}</Typography>
+        <Typography variant='body1'>{user.email}</Typography>
       </div>
     </div>
   );

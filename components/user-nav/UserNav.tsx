@@ -87,9 +87,13 @@ const UserNav: React.FC<Props> = ({ toggleSearchBar }) => {
                 onClick={handleOpenDropdown}
                 className={classes.avatarButtonContainer}
               >
-                <Avatar className={classes.avatarBackgroundColor}>
-                  {currentUser.name?.charAt(0).toUpperCase()}
-                </Avatar>
+                {currentUser.photo_url ? (
+                  <Avatar src={currentUser.photo_url} alt={currentUser.name} />
+                ) : (
+                  <Avatar aria-label='recipe'>
+                    {currentUser.name.charAt(0)}
+                  </Avatar>
+                )}
               </button>
               <Dropdown onClose={handleCloseDropDown} anchorEl={anchorEl} />
             </li>

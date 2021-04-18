@@ -1,14 +1,14 @@
-import firebase from "firebase";
-import "firebase/storage";
+import firebase from 'firebase';
+import 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBgs0COYCL-ixUJZdCvA6KPb3lzUYo-vLQ",
-  authDomain: "projecthub-8503d.firebaseapp.com",
-  projectId: "projecthub-8503d",
-  storageBucket: "projecthub-8503d.appspot.com",
-  messagingSenderId: "360005300028",
-  appId: "1:360005300028:web:05ef28eff74b468e70b839",
-  measurementId: "G-XE3K93RSVC",
+  apiKey: 'AIzaSyBgs0COYCL-ixUJZdCvA6KPb3lzUYo-vLQ',
+  authDomain: 'projecthub-8503d.firebaseapp.com',
+  projectId: 'projecthub-8503d',
+  storageBucket: 'projecthub-8503d.appspot.com',
+  messagingSenderId: '360005300028',
+  appId: '1:360005300028:web:05ef28eff74b468e70b839',
+  measurementId: 'G-XE3K93RSVC',
 };
 // Initialize Firebase
 firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
@@ -19,7 +19,7 @@ const auth = firebase.auth();
 
 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-export const fromMillis = firebase.firestore.Timestamp.fromMillis;
+const fromMillis = firebase.firestore.Timestamp.fromMillis;
 
 const increment = (count: number) => {
   return firebase.firestore.FieldValue.increment(count);
@@ -36,4 +36,13 @@ const postToJSON = (doc: any) => {
   };
 };
 
-export { firebase, db, auth, timestamp, increment, storage, postToJSON };
+export {
+  firebase,
+  db,
+  auth,
+  timestamp,
+  increment,
+  storage,
+  postToJSON,
+  fromMillis,
+};

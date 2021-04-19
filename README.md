@@ -4,7 +4,8 @@ ProjectHub is a community of developers to share & discuss the latest projects a
 
 ## Tech Stack
 
-- React
+- React js
+- Next js
 - Typescript
 - Firebase
 
@@ -14,4 +15,6 @@ ProjectHub is a community of developers to share & discuss the latest projects a
 - Create user account
 - Viewing of projects
 - Post a project
+- Comment
 - Favorites
+- Localization

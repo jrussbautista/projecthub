@@ -79,8 +79,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const socialLogin = async (provider: Provider) => {
     const user = await AuthService.socialLogin(provider);
-    setCurrentUser(user);
-    redirect(user?.uid as string);
+    if (user) {
+      setCurrentUser(user);
+      redirect(user?.uid as string);
+    }
   };
 
   const signUp = async ({ name, email, password }: SignUp) => {

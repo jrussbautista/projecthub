@@ -12,7 +12,7 @@ import { useAuth, useModal, useNotification } from 'contexts';
 import { CommentService } from 'services/comment-service';
 import { Status } from 'interfaces/Status';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     emptyMessage: {
       textAlign: 'center',
@@ -42,6 +42,9 @@ const useStyles = makeStyles(() =>
     },
     buttonText: {
       textTransform: 'none',
+    },
+    avatar: {
+      backgroundColor: theme.palette.primary.main,
     },
   })
 );
@@ -189,7 +192,9 @@ const CommentContainer: React.FC<Props> = ({ project }) => {
           {currentUser?.photo_url ? (
             <Avatar src={currentUser.photo_url} alt={currentUser.name} />
           ) : (
-            <Avatar>{currentUser?.name.charAt(0)}</Avatar>
+            <Avatar className={classes.avatar}>
+              {currentUser?.name.charAt(0)}
+            </Avatar>
           )}
 
           <div className={classes.formContainer}>

@@ -12,6 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import CommentForm from '../CommentForm';
 import formatDate from 'utils/formatDate';
+import { useAuth } from 'contexts';
 
 interface Props {
   comment: Comment;
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const CommentItem: React.FC<Props> = ({ comment, onDelete, onUpdate }) => {
   const classes = useStyles();
+  const { currentUser, isLoading } = useAuth();
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [isOpenEditForm, setIsOpenEditForm] = useState(false);
@@ -67,6 +69,10 @@ const CommentItem: React.FC<Props> = ({ comment, onDelete, onUpdate }) => {
     handleCancelEditForm();
   };
 
+  const showMoreMenu = () => {
+    return !isLoading && currentUser && currentUser.id === comment.user.id;
+  };
+
   return (
     <>
       <div
@@ -96,24 +102,29 @@ const CommentItem: React.FC<Props> = ({ comment, onDelete, onUpdate }) => {
             primary={<pre>{comment.comment}</pre>}
             secondary={formatDate(comment.created_at as any)}
           />
+
           <ListItemSecondaryAction>
-            <IconButton aria-label='more' onClick={handleOpenMoreMenu}>
-              <MoreIcon />
-            </IconButton>
+            {showMoreMenu() && (
+              <IconButton aria-label='more' onClick={handleOpenMoreMenu}>
+                <MoreIcon />
+              </IconButton>
+            )}
           </ListItemSecondaryAction>
         </ListItem>
       )}
 
-      <Menu
-        id='more-menu'
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleCloseMenu}
-      >
-        <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
-      </Menu>
+      {showMoreMenu() && (
+        <Menu
+          id='more-menu'
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleCloseMenu}
+        >
+          <MenuItem onClick={handleEdit}>Edit</MenuItem>
+          <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        </Menu>
+      )}
     </>
   );
 };

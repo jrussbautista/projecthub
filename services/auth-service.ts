@@ -1,15 +1,13 @@
-import { auth, db, timestamp, firebase } from "lib/firebase";
+import { auth, db, timestamp, firebase } from 'lib/firebase';
 import {
   UpdateProfile,
   SignUp,
   ChangePassword,
   Provider,
-} from "interfaces/Auth";
-import { USERS_COLLECTION } from "./service-constants";
+} from 'interfaces/Auth';
+import { USERS_COLLECTION } from './service-constants';
 
-const createUser = async (user: any) => {
-  if (!user) return;
-
+const createUser = async (user: firebase.User) => {
   const { uid, email, photoURL, emailVerified, displayName } = user;
 
   const newUser = {
@@ -38,20 +36,20 @@ const login = async ({
     return user;
   } catch (error) {
     const errorCode = error.code;
-    let errorMessage = "";
+    let errorMessage = '';
     switch (errorCode) {
-      case "auth/invalid-email":
-        errorMessage = "Email is invalid";
+      case 'auth/invalid-email':
+        errorMessage = 'Email is invalid';
         break;
-      case "auth/user-not-found":
-      case "auth/wrong-password":
-        errorMessage = "Email or password is incorrect";
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        errorMessage = 'Email or password is incorrect';
         break;
-      case "auth/user-disabled":
-        errorMessage = "Your account has been disabled";
+      case 'auth/user-disabled':
+        errorMessage = 'Your account has been disabled';
         break;
       default:
-        errorMessage = "Unable to login right now. Please try again later";
+        errorMessage = 'Unable to login right now. Please try again later';
     }
     throw new Error(errorMessage);
   }
@@ -72,14 +70,14 @@ const socialLogin = async (provider: Provider) => {
     let selectedProvider: firebase.auth.AuthProvider;
 
     switch (provider) {
-      case "google":
+      case 'google':
         selectedProvider = new firebase.auth.GoogleAuthProvider();
         break;
-      case "github":
+      case 'github':
         selectedProvider = new firebase.auth.GithubAuthProvider();
         break;
       default:
-        throw new Error("Unknown provider");
+        throw new Error('Unknown provider');
     }
 
     const { user, additionalUserInfo } = await auth.signInWithPopup(
@@ -91,11 +89,11 @@ const socialLogin = async (provider: Provider) => {
 
     return user;
   } catch (error) {
-    let errorMessage = "";
+    let errorMessage = '';
     switch (error.code) {
-      case "auth/account-exists-with-different-credential":
+      case 'auth/account-exists-with-different-credential':
         errorMessage =
-          "An account already exists with the same email address but different sign-in credentials.";
+          'An account already exists with the same email address but different sign-in credentials.';
         break;
       default:
         errorMessage = `Unable to login with ${provider} right now. Please try again later`;
@@ -106,7 +104,7 @@ const socialLogin = async (provider: Provider) => {
 
 const reauthenticate = (currentPassword: string) => {
   const user = auth.currentUser;
-  if (!user) throw new Error("Please login first");
+  if (!user) throw new Error('Please login first');
 
   const { email } = user;
 
@@ -119,11 +117,11 @@ const reauthenticate = (currentPassword: string) => {
 
 const updateProfile = async ({ name, email, password }: UpdateProfile) => {
   const { currentUser } = auth;
-  if (!currentUser) throw new Error("Please login first");
+  if (!currentUser) throw new Error('Please login first');
 
   if (currentUser.email !== email) {
     if (!password)
-      throw new Error("Password is required to update your profile");
+      throw new Error('Password is required to update your profile');
     await reauthenticate(password);
     await currentUser?.updateEmail(email);
   }
@@ -148,10 +146,10 @@ const changePassword = async ({
 }: ChangePassword) => {
   const { currentUser } = auth;
 
-  if (!currentUser) throw new Error("Please login first");
+  if (!currentUser) throw new Error('Please login first');
 
   if (newPassword !== confirmNewPassword)
-    throw new Error("New password does not match with confirm new password");
+    throw new Error('New password does not match with confirm new password');
 
   await reauthenticate(oldPassword);
   return currentUser.updatePassword(newPassword);
@@ -161,14 +159,14 @@ const sendResetPasswordEmail = async (email: string) => {
   try {
     return await auth.sendPasswordResetEmail(email);
   } catch (error) {
-    let errorMessage = "";
+    let errorMessage = '';
     switch (error.code) {
-      case "auth/user-not-found":
+      case 'auth/user-not-found':
         errorMessage = "There's no registered account with that email";
         break;
       default:
         errorMessage =
-          "Unable to send password reset right now. Please try again later.";
+          'Unable to send password reset right now. Please try again later.';
     }
     throw new Error(errorMessage);
   }

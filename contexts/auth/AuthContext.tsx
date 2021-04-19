@@ -1,10 +1,10 @@
-import { auth } from "lib/firebase";
-import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { useRouter } from "next/router";
-import { AuthService } from "services/auth-service";
-import { Login, SignUp, UpdateProfile, Provider } from "interfaces/Auth";
-import { User } from "interfaces/User";
-import reducer from "./auth-reducer";
+import { auth, firebase } from 'lib/firebase';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { AuthService } from 'services/auth-service';
+import { Login, SignUp, UpdateProfile, Provider } from 'interfaces/Auth';
+import { User } from 'interfaces/User';
+import reducer from './auth-reducer';
 
 interface State {
   isAuthenticated: boolean;
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const router = useRouter();
 
-  const setCurrentUser = (user: any) => {
+  const setCurrentUser = (user: firebase.User) => {
     const userDetails: User = {
       id: user.uid,
       name: user.displayName as string,
@@ -47,7 +47,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       email_verified: user.emailVerified,
       photo_url: user.photoURL,
     };
-    dispatch({ type: "SET_CURRENT_USER", payload: { user: userDetails } });
+    dispatch({ type: 'SET_CURRENT_USER', payload: { user: userDetails } });
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       if (user) {
         setCurrentUser(user);
       } else {
-        dispatch({ type: "LOG_OUT" });
+        dispatch({ type: 'LOG_OUT' });
       }
     });
     return () => unsubscribe();
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const redirect = (userId: string) => {
     const { pathname } = router;
-    if (pathname === "/") {
+    if (pathname === '/') {
       const url = `/user/${userId}`;
       router.push(url);
     }
@@ -71,8 +71,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login = async ({ email, password }: Login) => {
     const user = await AuthService.login({ email, password });
-    setCurrentUser(user);
-    redirect(user?.uid as string);
+    if (user) {
+      setCurrentUser(user);
+      redirect(user?.uid as string);
+    }
   };
 
   const socialLogin = async (provider: Provider) => {
@@ -83,8 +85,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const signUp = async ({ name, email, password }: SignUp) => {
     const user = await AuthService.signUp({ name, email, password });
-    setCurrentUser(user);
-    redirect(user?.uid as string);
+    if (user) {
+      setCurrentUser(user);
+      redirect(user?.uid as string);
+    }
   };
 
   const updateProfile = async ({ name, email, password }: UpdateProfile) => {
@@ -103,8 +107,8 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const logout = async () => {
     await AuthService.logout();
-    dispatch({ type: "LOG_OUT" });
-    router.push("/");
+    dispatch({ type: 'LOG_OUT' });
+    router.push('/');
   };
 
   return (

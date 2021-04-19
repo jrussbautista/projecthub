@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
 interface Props {
@@ -90,8 +93,8 @@ const UserNav: React.FC<Props> = ({ toggleSearchBar }) => {
                 {currentUser.photo_url ? (
                   <Avatar src={currentUser.photo_url} alt={currentUser.name} />
                 ) : (
-                  <Avatar aria-label='recipe'>
-                    {currentUser.name.charAt(0)}
+                  <Avatar className={classes.avatar}>
+                    {currentUser?.name?.charAt(0)}
                   </Avatar>
                 )}
               </button>

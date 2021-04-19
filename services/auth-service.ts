@@ -83,7 +83,7 @@ const socialLogin = async (provider: Provider) => {
     const { user, additionalUserInfo } = await auth.signInWithPopup(
       selectedProvider
     );
-    if (additionalUserInfo?.isNewUser) {
+    if (additionalUserInfo?.isNewUser && user) {
       await createUser(user);
     }
 

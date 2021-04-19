@@ -12,9 +12,11 @@ ProjectHub is a community of developers to share & discuss the latest projects a
 ## Features
 
 - Login with email and password
+- Login with (google, github)
 - Create user account
 - Viewing of projects
 - Post a project
 - Comment
 - Favorites
+- Enable dark mode
 - Localization

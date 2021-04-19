@@ -5,6 +5,8 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: '60%', // 16:9
+    backgroundSize: 'contain',
   },
   info: {
     display: 'flex',
@@ -77,11 +80,6 @@ const ProjectCard: React.FC<Props> = ({
   return (
     <Card>
       <CardHeader
-        title={
-          <Link href={`/projects/${project.slug}`}>
-            <a className={classes.title}>{project.title}</a>
-          </Link>
-        }
         avatar={
           <Link href={`/user/${project.user.id}`}>
             <a>
@@ -114,6 +112,16 @@ const ProjectCard: React.FC<Props> = ({
             image={project.image_url}
             title={project.title}
           />
+          <CardContent>
+            <Typography
+              className={classes.title}
+              gutterBottom
+              variant='body1'
+              component='h2'
+            >
+              {project.title}
+            </Typography>
+          </CardContent>
         </a>
       </Link>
       <CardActions disableSpacing>

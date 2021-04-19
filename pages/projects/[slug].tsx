@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: '60%',
+    backgroundSize: 'contain',
   },
   section: {
     marginTop: 30,
@@ -80,6 +81,9 @@ const useStyles = makeStyles((theme) => ({
     '&:not(:last-child)': {
       marginBottom: 25,
     },
+  },
+  item: {
+    marginBottom: 20,
   },
 }));
 
@@ -233,7 +237,9 @@ const ProjectPage = ({
                 </Typography>
                 {relatedProjects.length > 0 ? (
                   relatedProjects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <div key={project.id} className={classes.item}>
+                      <ProjectCard project={project} />
+                    </div>
                   ))
                 ) : (
                   <Typography

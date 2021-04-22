@@ -159,14 +159,14 @@ const ProjectPage = ({
             <CardContent>
               <div className={classes.listDetailContainer}>
                 <Typography gutterBottom variant='h6'>
-                  Share This Project
+                  {formatMessage({ id: 'Share This Project' })}
                 </Typography>
                 <SocialShare />
               </div>
 
               <div className={classes.listDetailContainer}>
                 <Typography gutterBottom variant='h6'>
-                  Maker
+                  {formatMessage({ id: 'Maker' })}
                 </Typography>
                 <Link href={`/user/${project.user.id}`}>
                   <a>
@@ -197,7 +197,7 @@ const ProjectPage = ({
               {(project.github_link || project.website_link) && (
                 <div className={classes.listDetailContainer}>
                   <Typography gutterBottom variant='h6'>
-                    Project Links
+                    {formatMessage({ id: 'Project Links' })}
                   </Typography>
                   {project.website_link && (
                     <Button

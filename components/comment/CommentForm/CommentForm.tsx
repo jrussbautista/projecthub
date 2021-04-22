@@ -4,6 +4,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useForm } from 'react-hook-form';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -40,6 +41,8 @@ const CommentForm: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
+  const { formatMessage } = useIntl();
+
   const { register, handleSubmit, errors, reset } = useForm<{
     comment: string;
   }>({
@@ -48,7 +51,9 @@ const CommentForm: React.FC<Props> = ({
     },
   });
 
-  const submitButtonText = comment ? 'Save' : 'Comment';
+  const submitButtonText = comment
+    ? formatMessage({ id: 'Save ' })
+    : formatMessage({ id: 'Comment' });
 
   const submit = (value: { comment: string }) => {
     onSubmit(value);
@@ -64,9 +69,9 @@ const CommentForm: React.FC<Props> = ({
       <TextField
         id={`comment-${comment?.id}`}
         className={classes.input}
-        label={'Comment'}
+        label={formatMessage({ id: 'Comment' })}
         name='comment'
-        placeholder={'Add comment...'}
+        placeholder={formatMessage({ id: 'Add comment' }) + '...'}
         fullWidth
         margin='normal'
         inputRef={register({
@@ -90,7 +95,7 @@ const CommentForm: React.FC<Props> = ({
             onClick={onCancel}
             className={classes.cancelButton}
           >
-            Cancel
+            {formatMessage({ id: 'Cancel' })}
           </Button>
           <Button
             variant='contained'

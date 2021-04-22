@@ -3,6 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Project } from 'interfaces/Project';
 import socialShare from 'utils/social-share';
+import { useIntl } from 'react-intl';
 
 interface Props {
   project: Project;
@@ -15,6 +16,8 @@ const ProjectCardMoreMenu: React.FC<Props> = ({
   onClose,
   project,
 }) => {
+  const { formatMessage } = useIntl();
+
   const handleShare = (provider: 'fb' | 'twitter') => {
     const url = `${window.location.origin}/projects/${project.slug}`;
     socialShare(provider, url);
@@ -29,9 +32,11 @@ const ProjectCardMoreMenu: React.FC<Props> = ({
         open={Boolean(anchorEl)}
         onClose={onClose}
       >
-        <MenuItem onClick={() => handleShare('fb')}>Share to facebook</MenuItem>
+        <MenuItem onClick={() => handleShare('fb')}>
+          {formatMessage({ id: 'Share to facebook' })}
+        </MenuItem>
         <MenuItem onClick={() => handleShare('twitter')}>
-          Share to twitter
+          {formatMessage({ id: 'Share to twitter' })}
         </MenuItem>
       </Menu>
     </>

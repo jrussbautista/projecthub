@@ -11,6 +11,7 @@ import CommentList from '../CommentList';
 import { useAuth, useModal, useNotification } from 'contexts';
 import { CommentService } from 'services/comment-service';
 import { Status } from 'interfaces/Status';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -61,6 +62,7 @@ const CommentContainer: React.FC<Props> = ({ project }) => {
   const { currentUser, isLoading } = useAuth();
   const { showNotification } = useNotification();
   const { openModal } = useModal();
+  const { formatMessage } = useIntl();
 
   const [commentsStatus, setCommentsStatus] = useState<Status>('idle');
   const [comments, setComments] = useState<Comment[]>([]);
@@ -246,7 +248,7 @@ const CommentContainer: React.FC<Props> = ({ project }) => {
           </>
         ) : (
           <Typography variant='body2' className={classes.emptyMessage}>
-            No comments yet.
+            {formatMessage({ id: 'No comments yet' })}.
           </Typography>
         )}
       </div>

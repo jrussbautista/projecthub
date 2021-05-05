@@ -4,10 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
 import FavoriteButton from 'components/favorite/FavoriteButton';
@@ -58,7 +56,6 @@ const ProjectCard: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const createdAt = formatDate(project.created_at);
   const initialAnchorlEl = {
     shareEl: null,
     moreEl: null,

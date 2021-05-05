@@ -79,32 +79,6 @@ const ProjectCard: React.FC<Props> = ({
 
   return (
     <Card>
-      <CardHeader
-        avatar={
-          <Link href={`/user/${project.user.id}`}>
-            <a>
-              {project.user.photo_url ? (
-                <Avatar src={project.user.photo_url} alt={project.user.name} />
-              ) : (
-                <Avatar aria-label='recipe' className={classes.avatar}>
-                  {project.user.name.charAt(0)}
-                </Avatar>
-              )}
-            </a>
-          </Link>
-        }
-        action={
-          hasMenu && (
-            <IconButton
-              aria-label='more'
-              onClick={(event) => handleClick('moreEl', event)}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          )
-        }
-        subheader={createdAt}
-      />
       <Link href={`/projects/${project.slug}`}>
         <a>
           <CardMedia
@@ -134,6 +108,14 @@ const ProjectCard: React.FC<Props> = ({
         </IconButton>
 
         <div className={classes.space} />
+        {hasMenu && (
+          <IconButton
+            aria-label='more'
+            onClick={(event) => handleClick('moreEl', event)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        )}
       </CardActions>
 
       <ProjectCardShareMenu

@@ -13,7 +13,6 @@ import { Project } from 'interfaces/Project';
 import Link from 'next/link';
 import ProjectCardMoreMenu from './ProjectCardMoreMenu';
 import ProjectCardShareMenu from './ProjectCardShareMenu';
-import formatDate from 'utils/formatDate';
 
 const useStyles = makeStyles((theme) => ({
   media: {

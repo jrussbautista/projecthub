@@ -16,9 +16,7 @@ import ProjectCardShareMenu from './ProjectCardShareMenu';
 
 const useStyles = makeStyles((theme) => ({
   media: {
-    height: 0,
-    paddingTop: '60%', // 16:9
-    backgroundSize: 'contain',
+    paddingTop: '55%',
   },
   info: {
     display: 'flex',
@@ -32,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: theme.palette.common.black,
+    fontWeight: 700,
+    fontSize: 20,
+    marginBottom: 0,
+  },
+  cardImgContainer: {
+    position: 'relative',
+  },
+  cardContent: {
+    paddingBottom: '0 !important',
   },
 }));
 
@@ -75,25 +82,27 @@ const ProjectCard: React.FC<Props> = ({
 
   return (
     <Card>
-      <Link href={`/projects/${project.slug}`}>
-        <a>
-          <CardMedia
-            className={classes.media}
-            image={project.image_url}
-            title={project.title}
-          />
-          <CardContent>
-            <Typography
-              className={classes.title}
-              gutterBottom
-              variant='body1'
-              component='h2'
-            >
-              {project.title}
-            </Typography>
-          </CardContent>
-        </a>
-      </Link>
+      <div className={classes.cardImgContainer}>
+        <Link href={`/projects/${project.slug}`}>
+          <a>
+            <CardMedia
+              className={classes.media}
+              image={project.image_url}
+              title={project.title}
+            />
+            <CardContent className={classes.cardContent}>
+              <Typography
+                className={classes.title}
+                gutterBottom
+                variant='body1'
+                component='h2'
+              >
+                {project.title}
+              </Typography>
+            </CardContent>
+          </a>
+        </Link>
+      </div>
       <CardActions disableSpacing>
         <FavoriteButton project={project} />
         <IconButton

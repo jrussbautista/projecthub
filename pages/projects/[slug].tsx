@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: '60%',
-    backgroundSize: 'contain',
   },
   section: {
     marginTop: 30,
@@ -94,9 +93,8 @@ const ProjectPage = ({
 
   const { formatMessage } = useIntl();
 
-  const [relatedProjectsStatus, setRelatedProjectsStatus] = useState<Status>(
-    'idle'
-  );
+  const [relatedProjectsStatus, setRelatedProjectsStatus] =
+    useState<Status>('idle');
   const [relatedProjects, setRelatedProjects] = useState<Project[]>([]);
 
   useEffect(() => {

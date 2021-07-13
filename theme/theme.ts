@@ -1,26 +1,26 @@
-import { createMuiTheme, ThemeOptions } from "@material-ui/core";
+import { createMuiTheme, ThemeOptions } from '@material-ui/core';
 
 export const paletteColorsDark = {
-  primary: "#009432",
-  secondary: "#3282b8",
-  error: "#E44C65",
-  background: "#1b262c",
-  text: "#bbe1fa",
+  primary: '#43A047',
+  secondary: '#3282b8',
+  error: '#E44C65',
+  background: '#1b262c',
+  text: '#bbe1fa',
 };
 
 export const paletteColorsLight = {
-  primary: "#009432",
-  secondary: "#ffe0ac",
-  error: "#E44C65",
-  background: "#f9f9f9",
-  text: "#050505",
+  primary: '#43A047',
+  secondary: '#ffe0ac',
+  error: '#E44C65',
+  background: '#f9f9f9',
+  text: '#050505',
 };
 
 const options = (dark: boolean): ThemeOptions => {
   const paletteColors = dark ? paletteColorsDark : paletteColorsLight;
   return {
     palette: {
-      type: dark ? "dark" : "light",
+      type: dark ? 'dark' : 'light',
       primary: {
         main: paletteColors.primary,
       },

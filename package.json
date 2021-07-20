@@ -13,6 +13,7 @@
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@types/nprogress": "^0.2.0",
     "@types/uuid": "^8.3.0",
+    "axios": "^0.21.1",
     "firebase": "^8.3.0",
     "next": "latest",
     "next-i18next": "^8.1.3",

@@ -57,9 +57,10 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: 10,
     },
     image: {
-      width: 200,
-      height: 200,
-      backgroundSize: 'cover',
+      width: 300,
+      height: 300,
+      backgroundSize: 'contain',
+      backgroundRepeat: 'no-repeat',
       border: `1px solid ${theme.palette.grey[400]}`,
       backgroundPosition: 'center',
     },
@@ -77,13 +78,8 @@ interface AddProjectForm extends AddProject {
 const CreateProject = () => {
   const classes = useStyles();
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    setValue,
-  } = useForm<AddProjectForm>();
+  const { register, handleSubmit, errors, control, setValue } =
+    useForm<AddProjectForm>();
 
   const { formatMessage } = useIntl();
 

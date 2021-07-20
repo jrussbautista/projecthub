@@ -1,3 +1,4 @@
+import { Cloudinary } from './../lib/cloudinary';
 import { auth, db, postToJSON, timestamp, fromMillis } from 'lib/firebase';
 import { AddProject, Project } from 'interfaces/Project';
 import { FirebaseStorage } from 'lib/firebase-storage';
@@ -23,7 +24,7 @@ const addProject = async ({
 
   const projectRef = db.collection(PROJECTS_COLLECTION);
 
-  const { downloadUrl } = await FirebaseStorage.uploadFile(image_file, uid);
+  const downloadUrl = await Cloudinary.fileUpload(image_file);
 
   const newProject = {
     title,

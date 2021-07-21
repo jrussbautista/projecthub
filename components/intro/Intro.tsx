@@ -9,13 +9,15 @@ import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    margin: '30px 0',
+    height: 'calc(100vh - 5rem)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    textAlign: 'center',
     [theme.breakpoints.up('lg')]: {
-      height: 'calc(100vh - 4rem)',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
       margin: '0 auto',
+      textAlign: 'left',
+      height: 'calc(100vh - 4rem)',
     },
   },
   heading: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btnJoin: {
     marginTop: 30,
+    marginBottom: 20,
     width: 200,
   },
   introImage: {

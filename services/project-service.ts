@@ -1,7 +1,6 @@
 import { Cloudinary } from './../lib/cloudinary';
 import { auth, db, postToJSON, timestamp, fromMillis } from 'lib/firebase';
 import { AddProject, Project } from 'interfaces/Project';
-import { FirebaseStorage } from 'lib/firebase-storage';
 import { PROJECTS_COLLECTION } from './service-constants';
 import slugify from 'utils/slugify';
 

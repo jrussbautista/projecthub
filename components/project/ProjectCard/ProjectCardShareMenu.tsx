@@ -2,7 +2,7 @@ import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Project } from 'interfaces/Project';
-import socialShare from 'utils/social-share';
+import socialShare from 'utils/socialShare';
 import { useIntl } from 'react-intl';
 
 interface Props {

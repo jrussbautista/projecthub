@@ -1,17 +1,17 @@
-import { LoginView, SignUpView, ForgotPasswordView } from "components/auth";
-import Modal from "components/modal";
-import { useModal } from "contexts";
+import { LoginView, SignUpView, ForgotPasswordView } from 'components/auth';
+import Modal from 'components/ui/Modal';
+import { useModal } from 'contexts';
 
 const ModalManager = () => {
   const { type, isVisible, closeModal } = useModal();
 
   const renderModal = () => {
     switch (type) {
-      case "LOGIN_VIEW":
+      case 'LOGIN_VIEW':
         return <LoginView />;
-      case "SIGN_UP_VIEW":
+      case 'SIGN_UP_VIEW':
         return <SignUpView />;
-      case "FORGOT_PASSWORD_VIEW":
+      case 'FORGOT_PASSWORD_VIEW':
         return <ForgotPasswordView />;
     }
   };

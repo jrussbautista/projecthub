@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SocialShare = () => {
+const ProjectSocialShare = () => {
   const classes = useStyles();
 
   return (
@@ -51,4 +51,4 @@ const SocialShare = () => {
   );
 };
 
-export default SocialShare;
+export default ProjectSocialShare;

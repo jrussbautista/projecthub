@@ -12,7 +12,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Switch from '@material-ui/core/Switch';
 import ChangePassword from 'components/settings/ChangePassword';
 import EditProfile from 'components/settings/EditProfile';
-import Meta from 'components/meta';
+import Meta from 'components/core/Meta';
 import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({

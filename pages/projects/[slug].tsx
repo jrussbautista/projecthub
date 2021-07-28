@@ -14,10 +14,10 @@ import Button from '@material-ui/core/Button';
 import FavoriteButton from 'components/favorite/FavoriteButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Avatar from '@material-ui/core/Avatar';
-import Meta from 'components/meta';
+import Meta from 'components/core/Meta';
 import { useIntl } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
-import SocialShare from 'components/social-share';
+import ProjectSocialShare from 'components/project/ProjectSocialShare';
 import CommentContainer from 'components/comment/CommentContainer';
 import ProjectCard from 'components/project/ProjectCard';
 
@@ -159,7 +159,7 @@ const ProjectPage = ({
                 <Typography gutterBottom variant='h6'>
                   {formatMessage({ id: 'Share This Project' })}
                 </Typography>
-                <SocialShare />
+                <ProjectSocialShare />
               </div>
 
               <div className={classes.listDetailContainer}>

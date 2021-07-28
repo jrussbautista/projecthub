@@ -18,7 +18,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import MenuItem from '@material-ui/core/MenuItem';
 import useCategories from 'hooks/use-categories';
-import Meta from 'components/meta';
+import Meta from 'components/core/Meta';
 import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme: Theme) =>

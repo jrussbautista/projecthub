@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { CssBaseline } from '@material-ui/core';
 import Router from 'next/router';
-import Header from 'components/header';
-import Footer from 'components/footer';
-import ModalManager from 'components/modal-manager';
-import NotificationContainer from 'components/notification-container';
+import Header from 'components/core/Header';
+import Footer from 'components/core/Footer';
+import ModalManager from 'components/core/ModalManager';
+import NotificationContainer from 'components/core/NotificationContainer';
 import {
   AuthProvider,
   ModalProvider,

@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import ProjectCard from 'components/project/ProjectCard';
 import UserDetails from 'components/user/UserDetails';
-import Meta from 'components/meta';
+import Meta from 'components/core/Meta';
 import { useAuth, useNotification } from 'contexts';
 import { ProjectService } from 'services/project-service';
 import ProjectEditModal from 'components/project/ProjectEditModal';

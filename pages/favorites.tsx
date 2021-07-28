@@ -6,7 +6,7 @@ import FavoriteCard from 'components/favorite/FavoriteCard';
 import Image from 'next/image';
 import { useFavorites } from 'contexts';
 import { useIntl } from 'react-intl';
-import Meta from 'components/meta';
+import Meta from 'components/core/Meta';
 
 const useStyles = makeStyles(() => ({
   container: {

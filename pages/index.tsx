@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import ProjectList from 'components/project/ProjectList';
 import Button from '@material-ui/core/Button';
 import Intro from 'components/intro';
-import Meta from 'components/meta';
+import Meta from 'components/core/Meta';
 
 const useStyles = makeStyles(() => ({
   loadMoreContainer: {

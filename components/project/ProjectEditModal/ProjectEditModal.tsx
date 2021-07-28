@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from 'components/modal';
+import Modal from 'components/ui/Modal';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { useForm, Controller } from 'react-hook-form';
@@ -74,21 +74,16 @@ const ProjectEditModal: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    setValue,
-  } = useForm<AddProjectForm>({
-    defaultValues: {
-      title: project?.title,
-      description: project?.description,
-      website_link: project?.website_link,
-      github_link: project?.website_link,
-      category: project?.category,
-    },
-  });
+  const { register, handleSubmit, errors, control, setValue } =
+    useForm<AddProjectForm>({
+      defaultValues: {
+        title: project?.title,
+        description: project?.description,
+        website_link: project?.website_link,
+        github_link: project?.website_link,
+        category: project?.category,
+      },
+    });
 
   const [imagePreview, setImagePreview] = useState<string | null | ArrayBuffer>(
     project.image_url || null

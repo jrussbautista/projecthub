@@ -10,7 +10,7 @@ import useCategories from 'hooks/use-categories';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Meta from 'components/meta';
+import Meta from 'components/core/Meta';
 
 const useStyles = makeStyles(() => ({
   container: {

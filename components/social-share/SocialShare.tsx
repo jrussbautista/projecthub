@@ -2,7 +2,7 @@ import React from 'react';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import { makeStyles } from '@material-ui/core/styles';
 import Facebook from 'components/icons/Facebook';
-import socialShare from 'utils/social-share';
+import socialShare from 'utils/socialShare';
 
 const useStyles = makeStyles(() => ({
   container: {

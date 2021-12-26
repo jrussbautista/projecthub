@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('lg')]: {
       margin: '0 auto',
       textAlign: 'left',
-      height: 'calc(100vh - 4rem)',
+      height: 'calc(100vh)',
     },
   },
   heading: {
@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   btnJoin: {
     marginTop: 30,
     marginBottom: 20,
-    width: 200,
   },
   introImage: {
     width: '100%',
@@ -60,22 +59,22 @@ const Intro: React.FC = () => {
     <Container className={classes.gridContainer}>
       <Grid container spacing={5}>
         <Grid item xs={12} lg={6}>
-          <Typography variant='h5' className={classes.heading} gutterBottom>
+          <Typography variant="h5" className={classes.heading} gutterBottom>
             {formatMessage({ id: 'heroTitle' })}
           </Typography>
           <Typography
-            variant='h6'
+            variant="h6"
             gutterBottom
-            color='textSecondary'
+            color="textSecondary"
             className={classes.description}
           >
             {formatMessage({ id: 'heroDescription' })}
           </Typography>
 
           <Button
-            variant='contained'
-            color='primary'
-            size='large'
+            variant="contained"
+            color="primary"
+            size="large"
             disableElevation
             className={classes.btnJoin}
             onClick={handleClickPostProject}
@@ -85,8 +84,8 @@ const Intro: React.FC = () => {
         </Grid>
         <Grid item xs={12} lg={6}>
           <img
-            src='/images/intro-image.svg'
-            alt='project ideas'
+            src="/images/intro-image.svg"
+            alt="project ideas"
             className={classes.introImage}
           />
         </Grid>

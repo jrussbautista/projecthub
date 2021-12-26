@@ -12,12 +12,13 @@ const useStyles = makeStyles((theme) => ({
     height: 'calc(100vh)',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     textAlign: 'center',
+    marginTop: 20,
     [theme.breakpoints.up('lg')]: {
       margin: '0 auto',
       textAlign: 'left',
       height: 'calc(100vh)',
+      justifyContent: 'center',
     },
   },
   heading: {

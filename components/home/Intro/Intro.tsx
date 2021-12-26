@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    height: 'calc(100vh - 5rem)',
+    height: 'calc(100vh)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
